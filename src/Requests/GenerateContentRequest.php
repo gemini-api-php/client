@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GenerativeAI\Requests;
 
-use GenerativeAI\Enums\Model;
+use GenerativeAI\Enums\ModelName;
 use GenerativeAI\GenerationConfig;
 use GenerativeAI\SafetySetting;
 use GenerativeAI\Traits\ArrayTypeValidator;
@@ -13,24 +13,39 @@ use JsonSerializable;
 
 use function json_encode;
 
-class GenerateContentRequest implements JsonSerializable
+class GenerateContentRequest implements JsonSerializable, RequestInterface
 {
     use ArrayTypeValidator;
 
     /**
-     * @param Model $model
+     * @param ModelName $modelName
      * @param Content[] $contents
      * @param SafetySetting[] $safetySettings
      * @param GenerationConfig|null $generationConfig
      */
     public function __construct(
-        public readonly Model $model,
+        public readonly ModelName $modelName,
         public readonly array $contents,
         public readonly array $safetySettings = [],
         public readonly ?GenerationConfig $generationConfig = null,
     ) {
         $this->ensureArrayOfType($this->contents, Content::class);
         $this->ensureArrayOfType($this->safetySettings, SafetySetting::class);
+    }
+
+    public function getOperation(): string
+    {
+        return "{$this->modelName->value}:generateContent";
+    }
+
+    public function getHttpMethod(): string
+    {
+        return 'POST';
+    }
+
+    public function getHttpPayload(): string
+    {
+        return (string) $this;
     }
 
     /**
@@ -44,7 +59,7 @@ class GenerateContentRequest implements JsonSerializable
     public function jsonSerialize(): array
     {
         $arr = [
-            'model' => $this->model->value,
+            'model' => $this->modelName->value,
             'contents' => $this->contents,
         ];
 

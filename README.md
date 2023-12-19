@@ -77,4 +77,31 @@ $response = $client->GeminiPro()->countTokens(
 );
 
 print $response->totalTokens;
+// 10
+```
+
+### Listing models
+
+```php
+$client = new GenerativeAI\Client('YOUR_GEMINI_PRO_API_TOKEN');
+
+$response = $client->listModels();
+
+print_r($response->models);
+//[
+//  [0] => GenerativeAI\Resources\Model Object
+//    (
+//      [name] => models/gemini-pro
+//      [displayName] => Gemini Pro
+//      [description] => The best model for scaling across a wide range of tasks
+//      ...
+//    )
+//  [1] => GenerativeAI\Resources\Model Object
+//    (
+//      [name] => models/gemini-pro-vision
+//      [displayName] => Gemini Pro Vision
+//      [description] => The best image understanding model to handle a broad range of applications
+//      ...
+//    )
+//]
 ```
