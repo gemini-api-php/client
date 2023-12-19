@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace GenerativeAI;
 
-use GenerativeAI\Enums\Model;
+use GenerativeAI\Enums\ModelName;
 use GenerativeAI\Requests\CountTokensRequest;
 use GenerativeAI\Requests\GenerateContentRequest;
+use GenerativeAI\Requests\ListModelsRequest;
+use GenerativeAI\Requests\RequestInterface;
 use GenerativeAI\Responses\CountTokensResponse;
 use GenerativeAI\Responses\GenerateContentResponse;
+use GenerativeAI\Responses\ListModelsResponse;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientExceptionInterface;
@@ -38,19 +41,19 @@ class Client
 
     public function GeminiPro(): GenerativeModel
     {
-        return $this->generativeModel(Model::GeminiPro);
+        return $this->generativeModel(ModelName::GeminiPro);
     }
 
     public function GeminiProVision(): GenerativeModel
     {
-        return $this->generativeModel(Model::GeminiProVision);
+        return $this->generativeModel(ModelName::GeminiProVision);
     }
 
-    public function generativeModel(Model $model): GenerativeModel
+    public function generativeModel(ModelName $modelName): GenerativeModel
     {
         return new GenerativeModel(
             $this,
-            $model,
+            $modelName,
         );
     }
 
@@ -59,12 +62,7 @@ class Client
      */
     public function generateContent(GenerateContentRequest $request): GenerateContentResponse
     {
-        $response = $this->doRequest(
-            $request->model,
-            'generateContent',
-            (string) $request,
-        );
-
+        $response = $this->doRequest($request);
         $json = json_decode($response, associative: true);
 
         return GenerateContentResponse::fromArray($json);
@@ -75,16 +73,22 @@ class Client
      */
     public function countTokens(CountTokensRequest $request): CountTokensResponse
     {
-        $response = $this->doRequest(
-            $request->model,
-            'countTokens',
-            (string) $request,
-        );
-
-        /** @var array{totalTokens: int} $json */
+        $response = $this->doRequest($request);
         $json = json_decode($response, associative: true);
 
         return CountTokensResponse::fromArray($json);
+    }
+
+    /**
+     * @throws ClientExceptionInterface
+     */
+    public function listModels(): ListModelsResponse
+    {
+        $request = new ListModelsRequest();
+        $response = $this->doRequest($request);
+        $json = json_decode($response, associative: true);
+
+        return ListModelsResponse::fromArray($json);
     }
 
     public function withBaseUrl(string $baseUrl): self
@@ -98,24 +102,21 @@ class Client
     /**
      * @throws ClientExceptionInterface
      */
-    private function doRequest(
-        Model $model,
-        string $operation,
-        string $payload,
-    ): string {
+    private function doRequest(RequestInterface $request): string
+    {
         if (!$this->client) {
             throw new RuntimeException('Missing client for Generative AI operation');
         }
 
         $uri = sprintf(
-            '%s/v1/%s:%s?key=%s',
+            '%s/v1/%s?key=%s',
             $this->baseUrl,
-            $model->value,
-            $operation,
+            $request->getOperation(),
             $this->apiKey,
         );
-        $httpRequest = $this->requestFactory->createRequest('POST', $uri);
+        $httpRequest = $this->requestFactory->createRequest($request->getHttpMethod(), $uri);
 
+        $payload = $request->getHttpPayload();
         if (!empty($payload)) {
             $stream = $this->streamFactory->createStream($payload);
             $httpRequest = $httpRequest->withBody($stream);
@@ -127,7 +128,7 @@ class Client
             throw new RuntimeException(
                 sprintf(
                     'Generative AI operation failed: operation=%s, status_code=%d,  response=%s',
-                    $operation,
+                    $request->getOperation(),
                     $response->getStatusCode(),
                     $response->getBody(),
                 ),

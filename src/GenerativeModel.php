@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GenerativeAI;
 
-use GenerativeAI\Enums\Model;
+use GenerativeAI\Enums\ModelName;
 use GenerativeAI\Enums\Role;
 use GenerativeAI\Requests\CountTokensRequest;
 use GenerativeAI\Requests\GenerateContentRequest;
@@ -23,7 +23,7 @@ class GenerativeModel
 
     public function __construct(
         private readonly Client $client,
-        private readonly Model $model,
+        private readonly ModelName $modelName,
     ) {
     }
 
@@ -34,7 +34,7 @@ class GenerativeModel
     {
         $content = new Content($parts, Role::User);
         $request = new GenerateContentRequest(
-            $this->model,
+            $this->modelName,
             [$content],
             $this->safetySettings,
             $this->generationConfig,
@@ -50,7 +50,7 @@ class GenerativeModel
     {
         $content = new Content($parts, Role::User);
         $request = new CountTokensRequest(
-            $this->model,
+            $this->modelName,
             [$content],
         );
 

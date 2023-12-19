@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GenerativeAI\Enums;
 
-enum Model: string
+enum ModelName: string
 {
     case Default = 'models/text-bison-001';
     case GeminiPro = 'models/gemini-pro';
