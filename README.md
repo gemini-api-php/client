@@ -14,6 +14,15 @@ _This library is not developed or endorsed by Google._
 
 - Erdem Köse - **[github.com/erdemkose](https://github.com/erdemkose)**
 
+## Table of Contents
+- [Installation](#installation)
+- [How to use](#how-to-use)
+  - [Basic text generation](#basic-text-generation)
+  - [Multimodal input](#multimodal-input)
+  - [Chat Session (Multi-Turn Conversations)](#chat-session-multi-turn-conversations)
+  - [Tokens counting](#tokens-counting)
+  - [Listing models](#listing-models)
+
 ## Installation
 
 > You need an API key to gain access to Google Generative AI services.
