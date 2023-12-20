@@ -65,7 +65,7 @@ $response = $client->GeminiProVision()->generateContent(
     new TextPart('Explain what is in the image'),
     new ImagePart(
         MimeType::IMAGE_JPEG,
-        base64_encode(file_get_contents(__DIR__ . '/assets/elephpant.jpg')),
+        base64_encode(file_get_contents('elephpant.jpg')),
     ),
 );
 
