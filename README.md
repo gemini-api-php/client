@@ -67,6 +67,40 @@ print $response->text();
 // The image is set against a starry background.
 ```
 
+### Chat Session (Multi-Turn Conversations)
+
+```php
+$client = new GenerativeAI\Client('YOUR_GEMINI_PRO_API_TOKEN');
+
+$chat = $client->GeminiPro()->startChat();
+
+$response = $chat->sendMessage(new TextPart('Hello World in PHP'));
+print $response->text();
+
+$response = $chat->sendMessage(new TextPart('in Go'));
+print $response->text();
+```
+
+```text
+<?php
+echo "Hello World!";
+?>
+
+This code will print "Hello World!" to the standard output.
+```
+
+```text
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello World!")
+}
+
+This code will print "Hello World!" to the standard output.
+```
+
 ### Tokens counting
 
 ```php

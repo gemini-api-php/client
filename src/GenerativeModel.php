@@ -12,10 +12,13 @@ use GenerativeAI\Responses\CountTokensResponse;
 use GenerativeAI\Responses\GenerateContentResponse;
 use GenerativeAI\Resources\Content;
 use GenerativeAI\Resources\Parts\PartInterface;
+use GenerativeAI\Traits\ArrayTypeValidator;
 use Psr\Http\Client\ClientExceptionInterface;
 
 class GenerativeModel
 {
+    use ArrayTypeValidator;
+
     /** @var SafetySetting[] */
     private array $safetySettings = [];
 
@@ -33,14 +36,31 @@ class GenerativeModel
     public function generateContent(PartInterface ...$parts): GenerateContentResponse
     {
         $content = new Content($parts, Role::User);
+
+        return $this->generateContentWithContents([$content]);
+    }
+
+    /**
+     * @param Content[] $contents
+     * @throws ClientExceptionInterface
+     */
+    public function generateContentWithContents(array $contents): GenerateContentResponse
+    {
+        $this->ensureArrayOfType($contents, Content::class);
+
         $request = new GenerateContentRequest(
             $this->modelName,
-            [$content],
+            $contents,
             $this->safetySettings,
             $this->generationConfig,
         );
 
         return $this->client->generateContent($request);
+    }
+
+    public function startChat(): ChatSession
+    {
+        return new ChatSession($this);
     }
 
     /**
