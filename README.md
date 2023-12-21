@@ -45,7 +45,7 @@ you need to allow `php-http/discovery` composer plugin or install a PSR-18 compa
 ```php
 $client = new GenerativeAI\Client('YOUR_GEMINI_PRO_API_TOKEN');
 
-$response = $client->GeminiPro()->generateContent(
+$response = $client->geminiPro()->generateContent(
     new TextPart('PHP in less than 100 chars')
 );
 
@@ -61,7 +61,7 @@ print $response->text();
 ```php
 $client = new GenerativeAI\Client('YOUR_GEMINI_PRO_API_TOKEN');
 
-$response = $client->GeminiProVision()->generateContent(
+$response = $client->geminiProVision()->generateContent(
     new TextPart('Explain what is in the image'),
     new ImagePart(
         MimeType::IMAGE_JPEG,
@@ -81,7 +81,7 @@ print $response->text();
 ```php
 $client = new GenerativeAI\Client('YOUR_GEMINI_PRO_API_TOKEN');
 
-$chat = $client->GeminiPro()->startChat();
+$chat = $client->geminiPro()->startChat();
 
 $response = $chat->sendMessage(new TextPart('Hello World in PHP'));
 print $response->text();
@@ -115,7 +115,7 @@ This code will print "Hello World!" to the standard output.
 ```php
 $client = new GenerativeAI\Client('YOUR_GEMINI_PRO_API_TOKEN');
 
-$response = $client->GeminiPro()->countTokens(
+$response = $client->geminiPro()->countTokens(
     new TextPart('PHP in less than 100 chars'),
 );
 
