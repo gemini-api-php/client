@@ -26,17 +26,15 @@ class Client
 {
     private string $baseUrl = 'https://generativelanguage.googleapis.com';
 
-    private RequestFactoryInterface $requestFactory;
-
-    private StreamFactoryInterface $streamFactory;
-
     public function __construct(
         private readonly string  $apiKey,
         private ?ClientInterface $client = null,
+        private ?RequestFactoryInterface $requestFactory = null,
+        private ?StreamFactoryInterface $streamFactory = null,
     ) {
-        $this->client = Psr18ClientDiscovery::find();
-        $this->requestFactory = Psr17FactoryDiscovery::findRequestFactory();
-        $this->streamFactory = Psr17FactoryDiscovery::findStreamFactory();
+        $this->client ??= Psr18ClientDiscovery::find();
+        $this->requestFactory ??= Psr17FactoryDiscovery::findRequestFactory();
+        $this->streamFactory ??= Psr17FactoryDiscovery::findStreamFactory();
     }
 
     public function geminiPro(): GenerativeModel
@@ -104,8 +102,8 @@ class Client
      */
     private function doRequest(RequestInterface $request): string
     {
-        if (!$this->client) {
-            throw new RuntimeException('Missing client for Generative AI operation');
+        if (!isset($this->client, $this->requestFactory, $this->streamFactory)) {
+            throw new RuntimeException('Missing client or factory for Generative AI operation');
         }
 
         $uri = sprintf(
