@@ -20,12 +20,9 @@ class CitationMetadata
     }
 
     /**
-     * @param array<string, array<int, array{
-     *   startIndex?: int|null,
-     *   endIndex?: int|null,
-     *   uri?: string|null,
-     *   license?: string|null
-     * }>> $array
+     * @param array{
+     *  citationSources: array<int, array{startIndex?: int|null, endIndex?: int|null, uri?: string|null, license?: string|null}>,
+     * } $array
      * @return self
      */
     public static function fromArray(array $array): self
