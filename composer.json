@@ -33,11 +33,17 @@
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.41",
     "guzzlehttp/guzzle": "^7.8.0",
-    "phpstan/phpstan": "^1.10.50"
+    "phpstan/phpstan": "^1.10.50",
+    "phpunit/phpunit": "^10.5"
   },
   "autoload": {
     "psr-4": {
       "GenerativeAI\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "GenerativeAI\\Tests\\": "tests/"
     }
   },
   "minimum-stability": "stable",
@@ -48,5 +54,15 @@
     "allow-plugins": {
       "php-http/discovery": false
     }
+  },
+  "scripts": {
+    "test:style": "php-cs-fixer check . -vv",
+    "test:types": "phpstan analyse --ansi",
+    "test:unit": "phpunit tests/Unit",
+    "test": [
+      "@test:style",
+      "@test:types",
+      "@test:unit"
+    ]
   }
 }
