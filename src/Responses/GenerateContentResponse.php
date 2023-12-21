@@ -75,7 +75,7 @@ class GenerateContentResponse
      *   safetyRatings: array<int, array{category: string, probability: string, blocked: bool|null}>,
      *  },
      *  candidates: array<int, array{
-     *   citationMetadata: array<string, mixed>,
+     *   citationMetadata: array{citationSources: array<int, array{startIndex?: int|null, endIndex?: int|null, uri?: string|null, license?: string|null}>},
      *   safetyRatings: array<int, array{category: string, probability: string, blocked: bool|null}>,
      *   content: array{parts: array<int, array{text: string, inlineData: array{mimeType: string, data: string}}>, role: string},
      *   finishReason: string,

@@ -82,7 +82,7 @@ class Content
 
     /**
      * @param array{
-     *     parts: array<int, array{text: string, inlineData: array{mimeType: string, data: string}}>,
+     *     parts: array<int, array{text?: string, inlineData?: array{mimeType: string, data: string}}>,
      *     role: string,
      * } $content
      * @return self
