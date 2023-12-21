@@ -39,12 +39,12 @@ class Client
         $this->streamFactory = Psr17FactoryDiscovery::findStreamFactory();
     }
 
-    public function GeminiPro(): GenerativeModel
+    public function geminiPro(): GenerativeModel
     {
         return $this->generativeModel(ModelName::GeminiPro);
     }
 
-    public function GeminiProVision(): GenerativeModel
+    public function geminiProVision(): GenerativeModel
     {
         return $this->generativeModel(ModelName::GeminiProVision);
     }
