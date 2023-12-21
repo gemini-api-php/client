@@ -26,7 +26,7 @@ class GenerativeModel
 
     public function __construct(
         private readonly Client $client,
-        private readonly ModelName $modelName,
+        public readonly ModelName $modelName,
     ) {
     }
 
