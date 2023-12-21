@@ -6,6 +6,11 @@ namespace GenerativeAI\Traits;
 
 use InvalidArgumentException;
 
+use function gettype;
+use function is_object;
+use function is_string;
+use function sprintf;
+
 trait ArrayTypeValidator
 {
     /**
@@ -21,7 +26,7 @@ trait ArrayTypeValidator
                     sprintf(
                         'Expected type %s but found %s',
                         $classString,
-                        $item::class,
+                        is_object($item) ? $item::class : gettype($item),
                     ),
                 );
             }
@@ -39,7 +44,7 @@ trait ArrayTypeValidator
                 throw new InvalidArgumentException(
                     sprintf(
                         'Expected string but found %s',
-                        $item::class,
+                        is_object($item) ? $item::class : gettype($item),
                     ),
                 );
             }
