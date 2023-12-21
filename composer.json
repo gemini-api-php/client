@@ -56,9 +56,11 @@
     }
   },
   "scripts": {
+    "fix:style": "php-cs-fixer fix . -vv",
     "test:style": "php-cs-fixer check . -vv",
     "test:types": "phpstan analyse --ansi",
-    "test:unit": "phpunit tests/Unit",
+    "test:unit": "phpunit --testsuite unit",
+    "test:unit-with-coverage": "phpunit --testsuite unit --coverage-text",
     "test": [
       "@test:style",
       "@test:types",
