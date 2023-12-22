@@ -30,7 +30,7 @@
     "psr/http-client": "^1.0",
     "psr/http-factory": "^1.0.2",
     "psr/http-factory-implementation": "*",
-    "psr/http-message": "^1.0.1"
+    "psr/http-message": "^1.0.1 || ^2.0"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.41",
