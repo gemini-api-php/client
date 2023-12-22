@@ -1,6 +1,6 @@
 name: Code Quality
 
-on: ['push', 'pull_request']
+on: ['push']
 
 jobs:
   ci:
@@ -10,9 +10,8 @@ jobs:
       fail-fast: true
       matrix:
         php-version: [8.1]
-        dependency-version: [prefer-lowest, prefer-stable]
 
-    name: Code Quality PHP${{ matrix.php-version }} - ${{ matrix.dependency-version }}
+    name: Code Quality
 
     steps:
       - name: Checkout
@@ -31,7 +30,7 @@ jobs:
           coverage: none
 
       - name: Install Composer dependencies
-        run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist
+        run: composer update --no-interaction --prefer-stable --prefer-dist
 
       - name: Code Style Checks
         run: composer test:style
