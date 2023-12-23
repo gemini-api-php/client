@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Tests\Unit\Requests;
+namespace GeminiAPI\Tests\Unit\Requests;
 
-use GenerativeAI\Enums\ModelName;
-use GenerativeAI\Enums\Role;
-use GenerativeAI\Requests\CountTokensRequest;
-use GenerativeAI\Resources\Content;
-use GenerativeAI\Resources\Parts\TextPart;
+use GeminiAPI\Enums\ModelName;
+use GeminiAPI\Enums\Role;
+use GeminiAPI\Requests\CountTokensRequest;
+use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\Parts\TextPart;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Resources\Parts;
+namespace GeminiAPI\Resources\Parts;
 
 interface PartInterface
 {

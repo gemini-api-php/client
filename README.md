@@ -1,14 +1,15 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/erdemkose/generative-ai-php/main/assets/example.png" width="800" alt="Generative AI PHP Client">
+    <img src="https://raw.githubusercontent.com/gemini-api-php/client/main/assets/example.png" width="800" alt="Gemini API PHP Client - Example">
 </p>
 <p align="center">
-    <a href="https://packagist.org/packages/erdemkose/generative-ai-php"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/erdemkose/generative-ai-php"></a>
-    <a href="https://packagist.org/packages/erdemkose/generative-ai-php"><img alt="Latest Version" src="https://img.shields.io/packagist/v/erdemkose/generative-ai-php"></a>
-    <a href="https://packagist.org/packages/erdemkose/generative-ai-php"><img alt="License" src="https://img.shields.io/github/license/erdemkose/generative-ai-php"></a>
+    <a href="https://packagist.org/packages/gemini-api-php/client"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/gemini-api-php/client"></a>
+    <a href="https://packagist.org/packages/gemini-api-php/client"><img alt="Latest Version" src="https://img.shields.io/packagist/v/gemini-api-php/client"></a>
+    <a href="https://packagist.org/packages/gemini-api-php/client"><img alt="License" src="https://img.shields.io/github/license/gemini-api-php/client"></a>
 </p>
 
-# Generative AI PHP Client
-Generative AI PHP Client allows you to use the Google's Generative AI models, like Gemini Pro and Gemini Pro Vision.
+# Gemini API PHP Client
+
+Gemini API PHP Client allows you to use the Google's generative AI models, like Gemini Pro and Gemini Pro Vision.
 
 _This library is not developed or endorsed by Google._
 
@@ -25,16 +26,16 @@ _This library is not developed or endorsed by Google._
 
 ## Installation
 
-> You need an API key to gain access to Google Generative AI services.
+> You need an API key to gain access to Google's Gemini API.
 > Visit [Google AI Studio](https://makersuite.google.com/) to get an API key.
 
-First step is to install the Generative AI PHP client with Composer.
+First step is to install the Gemini API PHP client with Composer.
 
 ```shell
-composer require erdemkose/generative-ai-php
+composer require gemini-api-php/client
 ```
 
-Generative AI PHP client does not come with an HTTP client.
+Gemini API PHP client does not come with an HTTP client.
 If you are just testing or do not have an HTTP client library in your project,
 you need to allow `php-http/discovery` composer plugin or install a PSR-18 compatible client library.
 
@@ -43,7 +44,7 @@ you need to allow `php-http/discovery` composer plugin or install a PSR-18 compa
 ### Basic text generation
 
 ```php
-$client = new GenerativeAI\Client('YOUR_GEMINI_PRO_API_TOKEN');
+$client = new GeminiAPI\Client('GEMINI_API_KEY');
 
 $response = $client->geminiPro()->generateContent(
     new TextPart('PHP in less than 100 chars')
@@ -59,7 +60,7 @@ print $response->text();
 > Image input modality is only enabled for Gemini Pro Vision model
 
 ```php
-$client = new GenerativeAI\Client('YOUR_GEMINI_PRO_API_TOKEN');
+$client = new GeminiAPI\Client('GEMINI_API_KEY');
 
 $response = $client->geminiProVision()->generateContent(
     new TextPart('Explain what is in the image'),
@@ -79,7 +80,7 @@ print $response->text();
 ### Chat Session (Multi-Turn Conversations)
 
 ```php
-$client = new GenerativeAI\Client('YOUR_GEMINI_PRO_API_TOKEN');
+$client = new GeminiAPI\Client('GEMINI_API_KEY');
 
 $chat = $client->geminiPro()->startChat();
 
@@ -113,7 +114,7 @@ This code will print "Hello World!" to the standard output.
 ### Tokens counting
 
 ```php
-$client = new GenerativeAI\Client('YOUR_GEMINI_PRO_API_TOKEN');
+$client = new GeminiAPI\Client('GEMINI_API_KEY');
 
 $response = $client->geminiPro()->countTokens(
     new TextPart('PHP in less than 100 chars'),
@@ -126,20 +127,20 @@ print $response->totalTokens;
 ### Listing models
 
 ```php
-$client = new GenerativeAI\Client('YOUR_GEMINI_PRO_API_TOKEN');
+$client = new GeminiAPI\Client('GEMINI_API_KEY');
 
 $response = $client->listModels();
 
 print_r($response->models);
 //[
-//  [0] => GenerativeAI\Resources\Model Object
+//  [0] => GeminiAPI\Resources\Model Object
 //    (
 //      [name] => models/gemini-pro
 //      [displayName] => Gemini Pro
 //      [description] => The best model for scaling across a wide range of tasks
 //      ...
 //    )
-//  [1] => GenerativeAI\Resources\Model Object
+//  [1] => GeminiAPI\Resources\Model Object
 //    (
 //      [name] => models/gemini-pro-vision
 //      [displayName] => Gemini Pro Vision

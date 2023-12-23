@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Resources;
+namespace GeminiAPI\Resources;
 
-use GenerativeAI\Enums\FinishReason;
-use GenerativeAI\Traits\ArrayTypeValidator;
+use GeminiAPI\Enums\FinishReason;
+use GeminiAPI\Traits\ArrayTypeValidator;
 use UnexpectedValueException;
 
 class Candidate

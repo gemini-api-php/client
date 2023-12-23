@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Tests\Unit\Resources;
+namespace GeminiAPI\Tests\Unit\Resources;
 
-use GenerativeAI\Resources\CitationSource;
+use GeminiAPI\Resources\CitationSource;
 use PHPUnit\Framework\TestCase;
 
 class CitationSourceTest extends TestCase

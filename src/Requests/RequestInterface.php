@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Requests;
+namespace GeminiAPI\Requests;
 
 interface RequestInterface
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Resources;
+namespace GeminiAPI\Resources;
 
-use GenerativeAI\Enums\HarmCategory;
-use GenerativeAI\Enums\HarmProbability;
+use GeminiAPI\Enums\HarmCategory;
+use GeminiAPI\Enums\HarmProbability;
 use JsonSerializable;
 
 class SafetyRating implements JsonSerializable

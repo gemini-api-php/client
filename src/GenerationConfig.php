@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI;
+namespace GeminiAPI;
 
-use GenerativeAI\Traits\ArrayTypeValidator;
+use GeminiAPI\Traits\ArrayTypeValidator;
 use JsonSerializable;
 use UnexpectedValueException;
 

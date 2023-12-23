@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Resources;
+namespace GeminiAPI\Resources;
 
-use GenerativeAI\Traits\ArrayTypeValidator;
+use GeminiAPI\Traits\ArrayTypeValidator;
 
 class CitationMetadata
 {

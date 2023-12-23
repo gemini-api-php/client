@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI;
+namespace GeminiAPI;
 
-use GenerativeAI\Enums\Role;
-use GenerativeAI\Resources\Content;
-use GenerativeAI\Resources\Parts\PartInterface;
-use GenerativeAI\Responses\GenerateContentResponse;
+use GeminiAPI\Enums\Role;
+use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\Parts\PartInterface;
+use GeminiAPI\Responses\GenerateContentResponse;
 use Psr\Http\Client\ClientExceptionInterface;
 
 class ChatSession

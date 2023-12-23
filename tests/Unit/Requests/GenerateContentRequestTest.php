@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Tests\Unit\Requests;
+namespace GeminiAPI\Tests\Unit\Requests;
 
-use GenerativeAI\Enums\HarmBlockThreshold;
-use GenerativeAI\Enums\HarmCategory;
-use GenerativeAI\Enums\HarmProbability;
-use GenerativeAI\Enums\ModelName;
-use GenerativeAI\Enums\Role;
-use GenerativeAI\GenerationConfig;
-use GenerativeAI\Requests\GenerateContentRequest;
-use GenerativeAI\Resources\Content;
-use GenerativeAI\Resources\Parts\TextPart;
-use GenerativeAI\Resources\SafetyRating;
-use GenerativeAI\SafetySetting;
+use GeminiAPI\Enums\HarmBlockThreshold;
+use GeminiAPI\Enums\HarmCategory;
+use GeminiAPI\Enums\HarmProbability;
+use GeminiAPI\Enums\ModelName;
+use GeminiAPI\Enums\Role;
+use GeminiAPI\GenerationConfig;
+use GeminiAPI\Requests\GenerateContentRequest;
+use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\Parts\TextPart;
+use GeminiAPI\Resources\SafetyRating;
+use GeminiAPI\SafetySetting;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI;
+namespace GeminiAPI;
 
-use GenerativeAI\Enums\ModelName;
-use GenerativeAI\Requests\CountTokensRequest;
-use GenerativeAI\Requests\GenerateContentRequest;
-use GenerativeAI\Requests\ListModelsRequest;
-use GenerativeAI\Requests\RequestInterface;
-use GenerativeAI\Responses\CountTokensResponse;
-use GenerativeAI\Responses\GenerateContentResponse;
-use GenerativeAI\Responses\ListModelsResponse;
+use GeminiAPI\Enums\ModelName;
+use GeminiAPI\Requests\CountTokensRequest;
+use GeminiAPI\Requests\GenerateContentRequest;
+use GeminiAPI\Requests\ListModelsRequest;
+use GeminiAPI\Requests\RequestInterface;
+use GeminiAPI\Responses\CountTokensResponse;
+use GeminiAPI\Responses\GenerateContentResponse;
+use GeminiAPI\Responses\ListModelsResponse;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientExceptionInterface;
@@ -103,7 +103,7 @@ class Client
     private function doRequest(RequestInterface $request): string
     {
         if (!isset($this->client, $this->requestFactory, $this->streamFactory)) {
-            throw new RuntimeException('Missing client or factory for Generative AI operation');
+            throw new RuntimeException('Missing client or factory for Gemini API operation');
         }
 
         $uri = sprintf(
@@ -125,7 +125,7 @@ class Client
         if ($response->getStatusCode() !== 200) {
             throw new RuntimeException(
                 sprintf(
-                    'Generative AI operation failed: operation=%s, status_code=%d,  response=%s',
+                    'Gemini API operation failed: operation=%s, status_code=%d,  response=%s',
                     $request->getOperation(),
                     $response->getStatusCode(),
                     $response->getBody(),

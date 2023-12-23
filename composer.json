@@ -1,6 +1,6 @@
 {
-  "name": "erdemkose/generative-ai-php",
-  "description": "Generative AI PHP is a client for Google's Generative AI service, Gemini Pro",
+  "name": "gemini-api-php/client",
+  "description": "API client for Google's Gemini API",
   "keywords": [
     "php",
     "client",
@@ -10,17 +10,12 @@
     "gemini",
     "gemini pro",
     "gemini pro vision",
-    "PaLM",
-    "language",
-    "model",
-    "generative",
-    "ai",
-    "generative-ai-php"
+    "ai"
   ],
   "license": "MIT",
   "authors": [
     {
-      "name": "erdemkose",
+      "name": "Erdem Köse",
       "email": "erdemkose@gmail.com"
     }
   ],
@@ -42,12 +37,12 @@
   },
   "autoload": {
     "psr-4": {
-      "GenerativeAI\\": "src/"
+      "GeminiAPI\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "GenerativeAI\\Tests\\": "tests/"
+      "GeminiAPI\\Tests\\": "tests/"
     }
   },
   "minimum-stability": "stable",
