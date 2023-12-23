@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Resources\Parts;
+namespace GeminiAPI\Resources\Parts;
 
-use GenerativeAI\Enums\MimeType;
+use GeminiAPI\Enums\MimeType;
 use JsonSerializable;
 
 use function json_encode;

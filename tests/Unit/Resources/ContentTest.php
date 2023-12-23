@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Tests\Unit\Resources;
+namespace GeminiAPI\Tests\Unit\Resources;
 
-use GenerativeAI\Enums\MimeType;
-use GenerativeAI\Enums\Role;
-use GenerativeAI\Resources\Content;
-use GenerativeAI\Resources\Parts\ImagePart;
-use GenerativeAI\Resources\Parts\TextPart;
+use GeminiAPI\Enums\MimeType;
+use GeminiAPI\Enums\Role;
+use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\Parts\ImagePart;
+use GeminiAPI\Resources\Parts\TextPart;
 use PHPUnit\Framework\TestCase;
 
 class ContentTest extends TestCase

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Requests;
+namespace GeminiAPI\Requests;
 
-use GenerativeAI\Enums\ModelName;
-use GenerativeAI\GenerationConfig;
-use GenerativeAI\SafetySetting;
-use GenerativeAI\Traits\ArrayTypeValidator;
-use GenerativeAI\Resources\Content;
+use GeminiAPI\Enums\ModelName;
+use GeminiAPI\GenerationConfig;
+use GeminiAPI\SafetySetting;
+use GeminiAPI\Traits\ArrayTypeValidator;
+use GeminiAPI\Resources\Content;
 use JsonSerializable;
 
 use function json_encode;

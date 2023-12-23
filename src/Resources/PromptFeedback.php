@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Resources;
+namespace GeminiAPI\Resources;
 
-use GenerativeAI\Enums\BlockReason;
-use GenerativeAI\Traits\ArrayTypeValidator;
+use GeminiAPI\Enums\BlockReason;
+use GeminiAPI\Traits\ArrayTypeValidator;
 use JsonSerializable;
 
 class PromptFeedback implements JsonSerializable

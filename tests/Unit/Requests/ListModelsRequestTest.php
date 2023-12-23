@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Tests\Unit\Requests;
+namespace GeminiAPI\Tests\Unit\Requests;
 
-use GenerativeAI\Requests\ListModelsRequest;
+use GeminiAPI\Requests\ListModelsRequest;
 use PHPUnit\Framework\TestCase;
 
 class ListModelsRequestTest extends TestCase

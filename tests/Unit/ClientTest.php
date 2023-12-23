@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Tests\Unit;
+namespace GeminiAPI\Tests\Unit;
 
-use GenerativeAI\Client;
-use GenerativeAI\Enums\ModelName;
-use GenerativeAI\GenerativeModel;
-use GenerativeAI\Requests\CountTokensRequest;
-use GenerativeAI\Requests\GenerateContentRequest;
-use GenerativeAI\Resources\Content;
+use GeminiAPI\Client;
+use GeminiAPI\Enums\ModelName;
+use GeminiAPI\GenerativeModel;
+use GeminiAPI\Requests\CountTokensRequest;
+use GeminiAPI\Requests\GenerateContentRequest;
+use GeminiAPI\Resources\Content;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Utils;

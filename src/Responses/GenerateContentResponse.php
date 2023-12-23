@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Responses;
+namespace GeminiAPI\Responses;
 
-use GenerativeAI\Traits\ArrayTypeValidator;
-use GenerativeAI\Resources\Candidate;
-use GenerativeAI\Resources\Parts\PartInterface;
-use GenerativeAI\Resources\Parts\TextPart;
-use GenerativeAI\Resources\PromptFeedback;
+use GeminiAPI\Traits\ArrayTypeValidator;
+use GeminiAPI\Resources\Candidate;
+use GeminiAPI\Resources\Parts\PartInterface;
+use GeminiAPI\Resources\Parts\TextPart;
+use GeminiAPI\Resources\PromptFeedback;
 use InvalidArgumentException;
 use ValueError;
 

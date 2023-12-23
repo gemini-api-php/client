@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Tests\Unit\Resources\Parts;
+namespace GeminiAPI\Tests\Unit\Resources\Parts;
 
-use GenerativeAI\Resources\Parts\TextPart;
+use GeminiAPI\Resources\Parts\TextPart;
 use PHPUnit\Framework\TestCase;
 
 class TextPartTest extends TestCase

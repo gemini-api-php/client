@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI;
+namespace GeminiAPI;
 
-use GenerativeAI\Enums\ModelName;
-use GenerativeAI\Enums\Role;
-use GenerativeAI\Requests\CountTokensRequest;
-use GenerativeAI\Requests\GenerateContentRequest;
-use GenerativeAI\Responses\CountTokensResponse;
-use GenerativeAI\Responses\GenerateContentResponse;
-use GenerativeAI\Resources\Content;
-use GenerativeAI\Resources\Parts\PartInterface;
-use GenerativeAI\Traits\ArrayTypeValidator;
+use GeminiAPI\Enums\ModelName;
+use GeminiAPI\Enums\Role;
+use GeminiAPI\Requests\CountTokensRequest;
+use GeminiAPI\Requests\GenerateContentRequest;
+use GeminiAPI\Responses\CountTokensResponse;
+use GeminiAPI\Responses\GenerateContentResponse;
+use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\Parts\PartInterface;
+use GeminiAPI\Traits\ArrayTypeValidator;
 use Psr\Http\Client\ClientExceptionInterface;
 
 class GenerativeModel

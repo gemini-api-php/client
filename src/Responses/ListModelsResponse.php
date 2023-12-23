@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Responses;
+namespace GeminiAPI\Responses;
 
-use GenerativeAI\Resources\Model;
+use GeminiAPI\Resources\Model;
 
 class ListModelsResponse
 {

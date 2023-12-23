@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Enums;
+namespace GeminiAPI\Enums;
 
 enum FinishReason: string
 {

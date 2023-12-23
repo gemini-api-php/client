@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Tests\Unit\Resources;
+namespace GeminiAPI\Tests\Unit\Resources;
 
-use GenerativeAI\Resources\CitationMetadata;
-use GenerativeAI\Resources\CitationSource;
+use GeminiAPI\Resources\CitationMetadata;
+use GeminiAPI\Resources\CitationSource;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

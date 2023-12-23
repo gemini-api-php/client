@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Resources;
+namespace GeminiAPI\Resources;
 
 use JsonSerializable;
 

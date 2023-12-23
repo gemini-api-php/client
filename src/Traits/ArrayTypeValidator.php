@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Traits;
+namespace GeminiAPI\Traits;
 
 use InvalidArgumentException;
 

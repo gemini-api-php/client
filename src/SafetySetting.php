@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI;
+namespace GeminiAPI;
 
-use GenerativeAI\Enums\HarmBlockThreshold;
-use GenerativeAI\Enums\HarmCategory;
+use GeminiAPI\Enums\HarmBlockThreshold;
+use GeminiAPI\Enums\HarmCategory;
 use JsonSerializable;
 
 use function json_encode;

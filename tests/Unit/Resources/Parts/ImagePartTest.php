@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Tests\Unit\Resources\Parts;
+namespace GeminiAPI\Tests\Unit\Resources\Parts;
 
-use GenerativeAI\Enums\MimeType;
-use GenerativeAI\Resources\Parts\ImagePart;
+use GeminiAPI\Enums\MimeType;
+use GeminiAPI\Resources\Parts\ImagePart;
 use PHPUnit\Framework\TestCase;
 
 class ImagePartTest extends TestCase

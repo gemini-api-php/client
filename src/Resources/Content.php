@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace GenerativeAI\Resources;
+namespace GeminiAPI\Resources;
 
-use GenerativeAI\Enums\MimeType;
-use GenerativeAI\Enums\Role;
-use GenerativeAI\Traits\ArrayTypeValidator;
-use GenerativeAI\Resources\Parts\ImagePart;
-use GenerativeAI\Resources\Parts\PartInterface;
-use GenerativeAI\Resources\Parts\TextPart;
+use GeminiAPI\Enums\MimeType;
+use GeminiAPI\Enums\Role;
+use GeminiAPI\Traits\ArrayTypeValidator;
+use GeminiAPI\Resources\Parts\ImagePart;
+use GeminiAPI\Resources\Parts\PartInterface;
+use GeminiAPI\Resources\Parts\TextPart;
 
 class Content
 {
