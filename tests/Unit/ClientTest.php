@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GeminiAPI\Tests\Unit;
 
 use GeminiAPI\Client;
+use GeminiAPI\ClientInterface as GeminiAPIClientInterface;
 use GeminiAPI\Enums\ModelName;
 use GeminiAPI\GenerativeModel;
 use GeminiAPI\Requests\CountTokensRequest;
@@ -14,7 +15,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Utils;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
@@ -24,7 +25,7 @@ class ClientTest extends TestCase
     {
         $client = new Client(
             'test-api-key',
-            $this->createMock(ClientInterface::class),
+            $this->createMock(HttpClientInterface::class),
         );
         self::assertInstanceOf(Client::class, $client);
     }
@@ -33,7 +34,7 @@ class ClientTest extends TestCase
     {
         $client = new Client(
             'test-api-key',
-            $this->createMock(ClientInterface::class),
+            $this->createMock(HttpClientInterface::class),
         );
         $client = $client->withBaseUrl('test-base-url');
         self::assertInstanceOf(Client::class, $client);
@@ -43,7 +44,7 @@ class ClientTest extends TestCase
     {
         $client = new Client(
             'test-api-key',
-            $this->createMock(ClientInterface::class),
+            $this->createMock(HttpClientInterface::class),
         );
         $model = $client->geminiPro();
         self::assertInstanceOf(GenerativeModel::class, $model);
@@ -54,7 +55,7 @@ class ClientTest extends TestCase
     {
         $client = new Client(
             'test-api-key',
-            $this->createMock(ClientInterface::class),
+            $this->createMock(HttpClientInterface::class),
         );
         $model = $client->geminiProVision();
         self::assertInstanceOf(GenerativeModel::class, $model);
@@ -65,7 +66,7 @@ class ClientTest extends TestCase
     {
         $client = new Client(
             'test-api-key',
-            $this->createMock(ClientInterface::class),
+            $this->createMock(HttpClientInterface::class),
         );
         $model = $client->generativeModel(ModelName::Embedding);
         self::assertInstanceOf(GenerativeModel::class, $model);
@@ -76,7 +77,7 @@ class ClientTest extends TestCase
     {
         $httpRequest = new Request(
             'POST',
-            'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=test-api-key',
+            'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent',
         );
         $httpResponse = new Response(
             body: <<<BODY
@@ -115,8 +116,10 @@ class ClientTest extends TestCase
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
         $requestFactory->expects(self::once())
             ->method('createRequest')
-            ->with('POST', 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=test-api-key')
+            ->with('POST', 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent')
             ->willReturn($httpRequest);
+
+        $httpRequest = $httpRequest->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key');
 
         $stream = Utils::streamFor('{"model":"models\/gemini-pro","contents":[{"parts":[{"text":"this is a text"}],"role":"user"}]}');
         $streamFactory = $this->createMock(StreamFactoryInterface::class);
@@ -125,7 +128,7 @@ class ClientTest extends TestCase
             ->with('{"model":"models\/gemini-pro","contents":[{"parts":[{"text":"this is a text"}],"role":"user"}]}')
             ->willReturn($stream);
 
-        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient->expects(self::once())
             ->method('sendRequest')
             ->with($httpRequest->withBody($stream))
@@ -149,7 +152,7 @@ class ClientTest extends TestCase
     {
         $httpRequest = new Request(
             'POST',
-            'https://generativelanguage.googleapis.com/v1/models/gemini-pro:countTokens?key=test-api-key',
+            'https://generativelanguage.googleapis.com/v1/models/gemini-pro:countTokens',
         );
         $httpResponse = new Response(
             body: <<<BODY
@@ -161,8 +164,10 @@ class ClientTest extends TestCase
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
         $requestFactory->expects(self::once())
             ->method('createRequest')
-            ->with('POST', 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:countTokens?key=test-api-key')
+            ->with('POST', 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:countTokens')
             ->willReturn($httpRequest);
+
+        $httpRequest = $httpRequest->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key');
 
         $stream = Utils::streamFor('{"model":"models\/gemini-pro","contents":[{"parts":[{"text":"this is a text"}],"role":"user"}]}');
         $streamFactory = $this->createMock(StreamFactoryInterface::class);
@@ -171,7 +176,7 @@ class ClientTest extends TestCase
             ->with('{"model":"models\/gemini-pro","contents":[{"parts":[{"text":"this is a text"}],"role":"user"}]}')
             ->willReturn($stream);
 
-        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient->expects(self::once())
             ->method('sendRequest')
             ->with($httpRequest->withBody($stream))
@@ -195,7 +200,7 @@ class ClientTest extends TestCase
     {
         $httpRequest = new Request(
             'GET',
-            'https://generativelanguage.googleapis.com/v1/models?key=test-api-key',
+            'https://generativelanguage.googleapis.com/v1/models',
         );
         $httpResponse = new Response(
             body: <<<BODY
@@ -238,10 +243,12 @@ class ClientTest extends TestCase
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
         $requestFactory->expects(self::once())
             ->method('createRequest')
-            ->with('GET', 'https://generativelanguage.googleapis.com/v1/models?key=test-api-key')
+            ->with('GET', 'https://generativelanguage.googleapis.com/v1/models')
             ->willReturn($httpRequest);
 
-        $httpClient = $this->createMock(ClientInterface::class);
+        $httpRequest = $httpRequest->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key');
+
+        $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient->expects(self::once())
             ->method('sendRequest')
             ->with($httpRequest)

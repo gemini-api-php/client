@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GeminiAPI;
 
+use GeminiAPI\ClientInterface as GeminiClientInterface;
 use GeminiAPI\Enums\ModelName;
 use GeminiAPI\Requests\CountTokensRequest;
 use GeminiAPI\Requests\GenerateContentRequest;
@@ -15,20 +16,19 @@ use GeminiAPI\Responses\ListModelsResponse;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use Psr\Http\Client\ClientExceptionInterface;
-use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use RuntimeException;
 
 use function json_decode;
 
-class Client
+class Client implements GeminiClientInterface
 {
     private string $baseUrl = 'https://generativelanguage.googleapis.com';
-
     public function __construct(
         private readonly string  $apiKey,
-        private ?ClientInterface $client = null,
+        private ?HttpClientInterface $client = null,
         private ?RequestFactoryInterface $requestFactory = null,
         private ?StreamFactoryInterface $streamFactory = null,
     ) {
@@ -106,13 +106,10 @@ class Client
             throw new RuntimeException('Missing client or factory for Gemini API operation');
         }
 
-        $uri = sprintf(
-            '%s/v1/%s?key=%s',
-            $this->baseUrl,
-            $request->getOperation(),
-            $this->apiKey,
-        );
-        $httpRequest = $this->requestFactory->createRequest($request->getHttpMethod(), $uri);
+        $uri = "{$this->baseUrl}/v1/{$request->getOperation()}";
+        $httpRequest = $this->requestFactory
+            ->createRequest($request->getHttpMethod(), $uri)
+            ->withAddedHeader(self::API_KEY_HEADER_NAME, $this->apiKey);
 
         $payload = $request->getHttpPayload();
         if (!empty($payload)) {
