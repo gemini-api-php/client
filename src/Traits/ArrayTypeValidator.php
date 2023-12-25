@@ -17,6 +17,7 @@ trait ArrayTypeValidator
      * @param array<int, mixed> $items
      * @param class-string $classString
      * @return void
+     * @throws InvalidArgumentException
      */
     private function ensureArrayOfType(array $items, string $classString): void
     {
@@ -36,6 +37,7 @@ trait ArrayTypeValidator
     /**
      * @param array<int, mixed> $items
      * @return void
+     * @throws InvalidArgumentException
      */
     private function ensureArrayOfString(array $items): void
     {
