@@ -8,10 +8,14 @@ use GeminiAPI\Enums\Role;
 use GeminiAPI\Resources\Content;
 use GeminiAPI\Resources\Parts\PartInterface;
 use GeminiAPI\Responses\GenerateContentResponse;
+use GeminiAPI\Traits\ArrayTypeValidator;
+use InvalidArgumentException;
 use Psr\Http\Client\ClientExceptionInterface;
 
 class ChatSession
 {
+    use ArrayTypeValidator;
+
     /** @var Content[] */
     private array $history;
 
@@ -39,5 +43,28 @@ class ChatSession
         }
 
         return $response;
+    }
+
+    /**
+     * @return Content[]
+     */
+    public function history(): array
+    {
+        return $this->history;
+    }
+
+    /**
+     * @param Content[] $history
+     * @return $this
+     * @throws InvalidArgumentException
+     */
+    public function withHistory(array $history): self
+    {
+        $this->ensureArrayOfType($history, Content::class);
+
+        $clone = clone $this;
+        $clone->history = $history;
+
+        return $clone;
     }
 }
