@@ -21,6 +21,7 @@ _This library is not developed or endorsed by Google._
   - [Basic text generation](#basic-text-generation)
   - [Multimodal input](#multimodal-input)
   - [Chat Session (Multi-Turn Conversations)](#chat-session-multi-turn-conversations)
+  - [Chat Session with history](#chat-session-with-history)
   - [Tokens counting](#tokens-counting)
   - [Listing models](#listing-models)
 
@@ -97,6 +98,44 @@ echo "Hello World!";
 ?>
 
 This code will print "Hello World!" to the standard output.
+```
+
+```text
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello World!")
+}
+
+This code will print "Hello World!" to the standard output.
+```
+
+### Chat Session with history
+
+```php
+$client = new GeminiAPI\Client('GEMINI_API_KEY');
+
+$history = [
+    Content::text('Hello World in PHP', Role::User),
+    Content::text(
+        <<<TEXT
+        <?php
+        echo "Hello World!";
+        ?>
+        
+        This code will print "Hello World!" to the standard output.
+        TEXT,
+        Role::Model,
+    ),
+];
+$chat = $client->geminiPro()
+    ->startChat()
+    ->withHistory($history);
+
+$response = $chat->sendMessage(new TextPart('in Go'));
+print $response->text();
 ```
 
 ```text
