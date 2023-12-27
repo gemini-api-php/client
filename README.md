@@ -150,6 +150,24 @@ func main() {
 This code will print "Hello World!" to the standard output.
 ```
 
+### Embed Content
+
+```php
+$client = new GeminiAPI\Client('GEMINI_API_KEY');
+
+$response = $client->embeddingModel(ModelName::Embedding)
+    ->embedContent(
+        new TextPart('PHP in less than 100 chars'),
+    );
+
+print_r($response->embedding->values);
+// [
+//    [0] => 0.041395925
+//    [1] => -0.017692696
+//    ...
+// ]
+```
+
 ### Tokens counting
 
 ```php

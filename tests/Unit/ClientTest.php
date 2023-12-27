@@ -9,6 +9,7 @@ use GeminiAPI\ClientInterface as GeminiAPIClientInterface;
 use GeminiAPI\Enums\ModelName;
 use GeminiAPI\GenerativeModel;
 use GeminiAPI\Requests\CountTokensRequest;
+use GeminiAPI\Requests\EmbedContentRequest;
 use GeminiAPI\Requests\GenerateContentRequest;
 use GeminiAPI\Resources\Content;
 use GuzzleHttp\Psr7\Request;
@@ -146,6 +147,59 @@ class ClientTest extends TestCase
         );
         $response = $client->generateContent($request);
         self::assertEquals('This is the Gemini Pro response', $response->text());
+    }
+
+    public function testEmbedContent()
+    {
+        $httpRequest = new Request(
+            'POST',
+            'https://generativelanguage.googleapis.com/v1/models/embedding-001:embedContent',
+        );
+        $httpResponse = new Response(
+            body: <<<BODY
+            {
+              "embedding": {
+                "values": [
+                  0.041395925,
+                  -0.017692696
+                ]
+              }
+            }
+            BODY,
+        );
+        $requestFactory = $this->createMock(RequestFactoryInterface::class);
+        $requestFactory->expects(self::once())
+            ->method('createRequest')
+            ->with('POST', 'https://generativelanguage.googleapis.com/v1/models/embedding-001:embedContent')
+            ->willReturn($httpRequest);
+
+        $httpRequest = $httpRequest->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key');
+
+        $stream = Utils::streamFor('{"content":{"parts":[{"text":"this is a text"}],"role":"user"}}');
+        $streamFactory = $this->createMock(StreamFactoryInterface::class);
+        $streamFactory->expects(self::once())
+            ->method('createStream')
+            ->with('{"content":{"parts":[{"text":"this is a text"}],"role":"user"}}')
+            ->willReturn($stream);
+
+        $httpClient = $this->createMock(HttpClientInterface::class);
+        $httpClient->expects(self::once())
+            ->method('sendRequest')
+            ->with($httpRequest->withBody($stream))
+            ->willReturn($httpResponse);
+
+        $client = new Client(
+            'test-api-key',
+            $httpClient,
+            $requestFactory,
+            $streamFactory,
+        );
+        $request = new EmbedContentRequest(
+            ModelName::Embedding,
+            Content::text('this is a text'),
+        );
+        $response = $client->embedContent($request);
+        self::assertEquals([0.041395925, -0.017692696], $response->embedding->values);
     }
 
     public function testCountTokens()
