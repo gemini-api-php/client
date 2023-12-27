@@ -7,6 +7,7 @@ namespace GeminiAPI\Traits;
 use InvalidArgumentException;
 
 use function gettype;
+use function is_float;
 use function is_object;
 use function is_string;
 use function sprintf;
@@ -46,6 +47,25 @@ trait ArrayTypeValidator
                 throw new InvalidArgumentException(
                     sprintf(
                         'Expected string but found %s',
+                        is_object($item) ? $item::class : gettype($item),
+                    ),
+                );
+            }
+        }
+    }
+
+    /**
+     * @param array<int, mixed> $items
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    private function ensureArrayOfFloat(array $items): void
+    {
+        foreach ($items as $item) {
+            if (!is_float($item)) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Expected float but found %s',
                         is_object($item) ? $item::class : gettype($item),
                     ),
                 );

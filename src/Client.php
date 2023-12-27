@@ -7,10 +7,12 @@ namespace GeminiAPI;
 use GeminiAPI\ClientInterface as GeminiClientInterface;
 use GeminiAPI\Enums\ModelName;
 use GeminiAPI\Requests\CountTokensRequest;
+use GeminiAPI\Requests\EmbedContentRequest;
 use GeminiAPI\Requests\GenerateContentRequest;
 use GeminiAPI\Requests\ListModelsRequest;
 use GeminiAPI\Requests\RequestInterface;
 use GeminiAPI\Responses\CountTokensResponse;
+use GeminiAPI\Responses\EmbedContentResponse;
 use GeminiAPI\Responses\GenerateContentResponse;
 use GeminiAPI\Responses\ListModelsResponse;
 use Http\Discovery\Psr17FactoryDiscovery;
@@ -55,6 +57,14 @@ class Client implements GeminiClientInterface
         );
     }
 
+    public function embeddingModel(ModelName $modelName): EmbeddingModel
+    {
+        return new EmbeddingModel(
+            $this,
+            $modelName,
+        );
+    }
+
     /**
      * @throws ClientExceptionInterface
      */
@@ -64,6 +74,17 @@ class Client implements GeminiClientInterface
         $json = json_decode($response, associative: true);
 
         return GenerateContentResponse::fromArray($json);
+    }
+
+    /**
+     * @throws ClientExceptionInterface
+     */
+    public function embedContent(EmbedContentRequest $request): EmbedContentResponse
+    {
+        $response = $this->doRequest($request);
+        $json = json_decode($response, associative: true);
+
+        return EmbedContentResponse::fromArray($json);
     }
 
     /**
