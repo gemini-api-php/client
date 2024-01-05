@@ -26,6 +26,10 @@ _This library is not developed or endorsed by Google._
   - [Streaming Chat Session](#streaming-chat-session)
   - [Tokens counting](#tokens-counting)
   - [Listing models](#listing-models)
+  - [Advanced Usages](#advanced-usages)
+    - [Safety Settings and Generation Configuration](#safety-settings-and-generation-configuration)
+    - [Using your own HTTP client](#using-your-own-http-client)
+    - [Using your own HTTP client for streaming responses](#using-your-own-http-client-for-streaming-responses)
 
 ## Installation
 
@@ -173,7 +177,7 @@ $callback = function (GenerateContentResponse $response): void {
 
 $client->geminiPro()->generateContentStream(
     $callback,
-    new TextPart('PHP in less than 100 chars')
+    [new TextPart('PHP in less than 100 chars')],
 );
 // Response #0
 // PHP: a versatile, general-purpose scripting language for web development, popular for
@@ -286,4 +290,80 @@ print_r($response->models);
 //      ...
 //    )
 //]
+```
+
+### Advanced Usages
+
+#### Safety Settings and Generation Configuration
+
+```php
+$client = new GeminiAPI\Client('GEMINI_API_KEY');
+$safetySetting = new GeminiAPI\SafetySetting(
+    HarmCategory::HARM_CATEGORY_HATE_SPEECH,
+    HarmBlockThreshold::BLOCK_LOW_AND_ABOVE,
+);
+$generationConfig = (new GeminiAPI\GenerationConfig())
+    ->withCandidateCount(1)
+    ->withMaxOutputTokens(40)
+    ->withTemperature(0.5)
+    ->withTopK(40)
+    ->withTopP(0.6)
+    ->withStopSequences(['STOP']);
+
+$response = $client->geminiPro()
+    ->withAddedSafetySetting($safetySetting)
+    ->withGenerationConfig($generationConfig)
+    ->generateContent(
+        new TextPart('PHP in less than 100 chars')
+    );
+```
+
+#### Using your own HTTP client
+
+```php
+$guzzle = new GuzzleHttp\Client([
+  'proxy' => 'http://localhost:8125',
+]);
+$client = new GeminiAPI\Client('GEMINI_API_KEY', $guzzle);
+
+$response = $client->geminiPro()->generateContent(
+    new TextPart('PHP in less than 100 chars')
+);
+```
+
+#### Using your own HTTP client for streaming responses
+
+> Requires `curl` extension to be enabled
+
+Since streaming responses are fetched using `curl` extension, they cannot use the custom HTTP client passed to the Gemini Client.
+You need to pass a `CurlHandler` if you want to override connection options.
+
+The following curl options will be overwritten by the Gemini Client.
+
+- `CURLOPT_URL`
+- `CURLOPT_POST`
+- `CURLOPT_POSTFIELDS`
+- `CURLOPT_WRITEFUNCTION`
+
+You can also pass the headers you want to be used in the requests.
+
+```php
+$client = new GeminiAPI\Client('GEMINI_API_KEY');
+
+$callback = function (GenerateContentResponse $response): void {
+    print $response->text();
+};
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_PROXY, 'http://localhost:8125');
+
+$client->withRequestHeaders([
+        'User-Agent' => 'My Gemini-backed app'
+    ])
+    ->geminiPro()
+    ->generateContentStream(
+        $callback,
+        [new TextPart('PHP in less than 100 chars')],
+        $ch,
+    );
 ```

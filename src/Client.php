@@ -27,6 +27,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use RuntimeException;
 
+use function array_map;
 use function curl_close;
 use function curl_exec;
 use function curl_getinfo;
@@ -35,10 +36,17 @@ use function curl_setopt;
 use function extension_loaded;
 use function json_decode;
 use function sprintf;
+use function strtolower;
 
 class Client implements GeminiClientInterface
 {
     private string $baseUrl = 'https://generativelanguage.googleapis.com';
+
+    /**
+     * @var array<string, string>
+     */
+    private array $requestHeaders = [];
+
     public function __construct(
         private readonly string  $apiKey,
         private ?HttpClientInterface $client = null,
@@ -88,13 +96,16 @@ class Client implements GeminiClientInterface
     }
 
     /**
+     * @param GenerateContentStreamRequest $request
      * @param callable(GenerateContentResponse): void $callback
+     * @param CurlHandle|null $curl
      * @throws BadMethodCallException
      * @throws RuntimeException
      */
     public function generateContentStream(
         GenerateContentStreamRequest $request,
         callable $callback,
+        ?CurlHandle $curl = null,
     ): void {
         if (!extension_loaded('curl')) {
             throw new BadMethodCallException('Gemini API requires `curl` extension for streaming responses');
@@ -120,18 +131,25 @@ class Client implements GeminiClientInterface
                 );
         };
 
-        $ch = curl_init("{$this->baseUrl}/v1/{$request->getOperation()}");
+        $ch = $curl ?? curl_init();
 
         if ($ch === false) {
             throw new RuntimeException('Gemini API cannot initialize streaming content request');
         }
 
+        $headers = $this->requestHeaders + [
+            'content-type' => 'application/json',
+            self::API_KEY_HEADER_NAME => $this->apiKey,
+        ];
+        $headerLines = [];
+        foreach ($headers as $name => $value) {
+            $headerLines[] = "{$name}: {$value}";
+        }
+
+        curl_setopt($ch, CURLOPT_URL, "{$this->baseUrl}/v1/{$request->getOperation()}");
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-type: application/json',
-            self::API_KEY_HEADER_NAME . ": {$this->apiKey}",
-        ]);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headerLines);
         curl_setopt($ch, CURLOPT_WRITEFUNCTION, $writeFunction);
         curl_exec($ch);
         curl_close($ch);
@@ -180,6 +198,18 @@ class Client implements GeminiClientInterface
     }
 
     /**
+     * @param array<string, string> $headers
+     * @return self
+     */
+    public function withRequestHeaders(array $headers): self
+    {
+        $clone = clone $this;
+        $clone->requestHeaders = array_map(strtolower(...), $headers);
+
+        return $clone;
+    }
+
+    /**
      * @throws ClientExceptionInterface
      */
     private function doRequest(RequestInterface $request): string
@@ -192,6 +222,10 @@ class Client implements GeminiClientInterface
         $httpRequest = $this->requestFactory
             ->createRequest($request->getHttpMethod(), $uri)
             ->withAddedHeader(self::API_KEY_HEADER_NAME, $this->apiKey);
+
+        foreach ($this->requestHeaders as $name => $value) {
+            $httpRequest = $httpRequest->withAddedHeader($name, $value);
+        }
 
         $payload = $request->getHttpPayload();
         if (!empty($payload)) {

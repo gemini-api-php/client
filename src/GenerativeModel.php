@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GeminiAPI;
 
 use BadMethodCallException;
+use CurlHandle;
 use GeminiAPI\Enums\ModelName;
 use GeminiAPI\Enums\Role;
 use GeminiAPI\Requests\CountTokensRequest;
@@ -62,26 +63,33 @@ class GenerativeModel
 
     /**
      * @param callable(GenerateContentResponse): void $callback
-     * @param PartInterface ...$parts
+     * @param PartInterface[] $parts
+     * @param CurlHandle|null $ch
      * @return void
-     * @throws BadMethodCallException
      */
     public function generateContentStream(
         callable $callback,
-        PartInterface ...$parts,
+        array $parts,
+        ?CurlHandle $ch = null,
     ): void {
+        $this->ensureArrayOfType($parts, PartInterface::class);
+
         $content = new Content($parts, Role::User);
 
-        $this->generateContentStreamWithContents($callback, [$content]);
+        $this->generateContentStreamWithContents($callback, [$content], $ch);
     }
 
     /**
      * @param callable(GenerateContentResponse): void $callback
      * @param Content[] $contents
+     * @param CurlHandle|null $ch
      * @return void
      */
-    public function generateContentStreamWithContents(callable $callback, array $contents): void
-    {
+    public function generateContentStreamWithContents(
+        callable $callback,
+        array $contents,
+        ?CurlHandle $ch = null,
+    ): void {
         $this->ensureArrayOfType($contents, Content::class);
 
         $request = new GenerateContentStreamRequest(
@@ -91,7 +99,7 @@ class GenerativeModel
             $this->generationConfig,
         );
 
-        $this->client->generateContentStream($request, $callback);
+        $this->client->generateContentStream($request, $callback, $ch);
     }
 
     public function startChat(): ChatSession
