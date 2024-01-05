@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace GeminiAPI;
 
+use BadMethodCallException;
 use GeminiAPI\Enums\ModelName;
 use GeminiAPI\Enums\Role;
 use GeminiAPI\Requests\CountTokensRequest;
 use GeminiAPI\Requests\GenerateContentRequest;
+use GeminiAPI\Requests\GenerateContentStreamRequest;
 use GeminiAPI\Responses\CountTokensResponse;
 use GeminiAPI\Responses\GenerateContentResponse;
 use GeminiAPI\Resources\Content;
@@ -56,6 +58,28 @@ class GenerativeModel
         );
 
         return $this->client->generateContent($request);
+    }
+
+    /**
+     * @param callable(GenerateContentResponse): void $callback
+     * @param PartInterface ...$parts
+     * @return void
+     * @throws BadMethodCallException
+     */
+    public function generateContentStream(
+        callable $callback,
+        PartInterface ...$parts,
+    ): void {
+        $content = new Content($parts, Role::User);
+
+        $request = new GenerateContentStreamRequest(
+            $this->modelName,
+            [$content],
+            $this->safetySettings,
+            $this->generationConfig,
+        );
+
+        $this->client->generateContentStream($request, $callback);
     }
 
     public function startChat(): ChatSession
