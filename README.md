@@ -22,6 +22,7 @@ _This library is not developed or endorsed by Google._
   - [Multimodal input](#multimodal-input)
   - [Chat Session (Multi-Turn Conversations)](#chat-session-multi-turn-conversations)
   - [Chat Session with history](#chat-session-with-history)
+  - [Streaming responses](#streaming-responses)
   - [Tokens counting](#tokens-counting)
   - [Listing models](#listing-models)
 
@@ -149,6 +150,34 @@ func main() {
 
 This code will print "Hello World!" to the standard output.
 ```
+
+### Streaming responses
+
+In the streaming response, the callback function will be called whenever a response is returned from the server.
+
+Long responses may be broken into separate responses, and you can start receiving responses faster using a content stream.
+
+```php
+$client = new GeminiAPI\Client('GEMINI_API_KEY');
+
+$callback = function (GenerateContentResponse $response): void {
+    static $count = 0;
+
+    print "\nResponse #{$count}\n";
+    print $response->text();
+    $count++;
+};
+
+$client->geminiPro()->generateContentStream(
+    $callback,
+    new TextPart('PHP in less than 100 chars')
+);
+// Response #0
+// PHP: a versatile, general-purpose scripting language for web development, popular for
+// Response #1
+//  its simple syntax and rich library of functions.
+```
+
 
 ### Embed Content
 

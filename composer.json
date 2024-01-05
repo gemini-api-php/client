@@ -35,6 +35,9 @@
     "phpstan/phpstan": "^1.10.50",
     "phpunit/phpunit": "^10.5"
   },
+  "suggest": {
+    "ext-curl": "Required for streaming responses"
+  },
   "autoload": {
     "psr-4": {
       "GeminiAPI\\": "src/"
