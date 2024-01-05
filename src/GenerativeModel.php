@@ -72,9 +72,21 @@ class GenerativeModel
     ): void {
         $content = new Content($parts, Role::User);
 
+        $this->generateContentStreamWithContents($callback, [$content]);
+    }
+
+    /**
+     * @param callable(GenerateContentResponse): void $callback
+     * @param Content[] $contents
+     * @return void
+     */
+    public function generateContentStreamWithContents(callable $callback, array $contents): void
+    {
+        $this->ensureArrayOfType($contents, Content::class);
+
         $request = new GenerateContentStreamRequest(
             $this->modelName,
-            [$content],
+            $contents,
             $this->safetySettings,
             $this->generationConfig,
         );
