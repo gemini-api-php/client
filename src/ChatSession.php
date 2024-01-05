@@ -46,6 +46,37 @@ class ChatSession
     }
 
     /**
+     * @param callable(GenerateContentResponse): void $callback
+     * @param PartInterface ...$parts
+     * @return void
+     */
+    public function sendMessageStream(
+        callable $callback,
+        PartInterface ...$parts,
+    ): void {
+        $this->history[] = new Content($parts, Role::User);
+
+        $parts = [];
+        $partsCollectorCallback = function (GenerateContentResponse $response) use ($callback, &$parts) {
+            if(!empty($response->candidates)) {
+                array_push($parts, ...$response->parts());
+            }
+
+            $callback($response);
+        };
+
+        $config = (new GenerationConfig())
+            ->withCandidateCount(1);
+        $this->model
+            ->withGenerationConfig($config)
+            ->generateContentStreamWithContents($partsCollectorCallback, $this->history);
+
+        if (!empty($parts)) {
+            $this->history[] = new Content($parts, Role::Model);
+        }
+    }
+
+    /**
      * @return Content[]
      */
     public function history(): array

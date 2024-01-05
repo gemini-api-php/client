@@ -23,6 +23,7 @@ _This library is not developed or endorsed by Google._
   - [Chat Session (Multi-Turn Conversations)](#chat-session-multi-turn-conversations)
   - [Chat Session with history](#chat-session-with-history)
   - [Streaming responses](#streaming-responses)
+  - [Streaming Chat Session](#streaming-chat-session)
   - [Tokens counting](#tokens-counting)
   - [Listing models](#listing-models)
 
@@ -153,6 +154,8 @@ This code will print "Hello World!" to the standard output.
 
 ### Streaming responses
 
+> Requires `curl` extension to be enabled
+
 In the streaming response, the callback function will be called whenever a response is returned from the server.
 
 Long responses may be broken into separate responses, and you can start receiving responses faster using a content stream.
@@ -178,6 +181,55 @@ $client->geminiPro()->generateContentStream(
 //  its simple syntax and rich library of functions.
 ```
 
+### Streaming Chat Session
+
+> Requires `curl` extension to be enabled 
+
+```php
+$client = new GeminiAPI\Client('GEMINI_API_KEY');
+
+$history = [
+    Content::text('Hello World in PHP', Role::User),
+    Content::text(
+        <<<TEXT
+        <?php
+        echo "Hello World!";
+        ?>
+        
+        This code will print "Hello World!" to the standard output.
+        TEXT,
+        Role::Model,
+    ),
+];
+$chat = $client->geminiPro()
+    ->startChat()
+    ->withHistory($history);
+
+$callback = function (GenerateContentResponse $response): void {
+    static $count = 0;
+
+    print "\nResponse #{$count}\n";
+    print $response->text();
+    $count++;
+};
+
+$chat->sendMessageStream($callback, new TextPart('in Go'));
+```
+
+```text
+Response #0
+package main
+
+import "fmt"
+
+func main() {
+
+Response #1
+    fmt.Println("Hello World!")
+}
+
+This code will print "Hello World!" to the standard output.
+```
 
 ### Embed Content
 
