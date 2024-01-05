@@ -26,7 +26,7 @@ class PromptFeedback implements JsonSerializable
     /**
      * @param array{
      *     blockReason: string|null,
-     *     safetyRatings: array<int, array{category: string, probability: string, blocked?: bool|null}>
+     *     safetyRatings?: array<int, array{category: string, probability: string, blocked?: bool|null}>
      * } $array
      * @return self
      */
@@ -35,7 +35,7 @@ class PromptFeedback implements JsonSerializable
         $blockReason = BlockReason::tryFrom($array['blockReason'] ?? '');
         $safetyRatings = array_map(
             static fn (array $rating): SafetyRating => SafetyRating::fromArray($rating),
-            $array['safetyRatings'],
+            $array['safetyRatings'] ?? [],
         );
 
         return new self($blockReason, $safetyRatings);

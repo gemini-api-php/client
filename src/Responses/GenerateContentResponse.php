@@ -9,7 +9,6 @@ use GeminiAPI\Resources\Candidate;
 use GeminiAPI\Resources\Parts\PartInterface;
 use GeminiAPI\Resources\Parts\TextPart;
 use GeminiAPI\Resources\PromptFeedback;
-use InvalidArgumentException;
 use ValueError;
 
 class GenerateContentResponse
@@ -18,11 +17,11 @@ class GenerateContentResponse
 
     /**
      * @param Candidate[] $candidates
-     * @param PromptFeedback $promptFeedback
+     * @param ?PromptFeedback $promptFeedback
      */
     public function __construct(
         public readonly array $candidates,
-        public readonly PromptFeedback $promptFeedback,
+        public readonly ?PromptFeedback $promptFeedback = null,
     ) {
         $this->ensureArrayOfType($candidates, Candidate::class);
     }
@@ -72,7 +71,7 @@ class GenerateContentResponse
      * @param array{
      *  promptFeedback: array{
      *   blockReason: string|null,
-     *   safetyRatings: array<int, array{category: string, probability: string, blocked: bool|null}>,
+     *   safetyRatings?: array<int, array{category: string, probability: string, blocked: bool|null}>,
      *  },
      *  candidates: array<int, array{
      *   citationMetadata: array{citationSources: array<int, array{startIndex?: int|null, endIndex?: int|null, uri?: string|null, license?: string|null}>},
@@ -87,16 +86,15 @@ class GenerateContentResponse
      */
     public static function fromArray(array $array): self
     {
-        if (empty($array['promptFeedback']) || !is_array($array['promptFeedback'])) {
-            throw new InvalidArgumentException('invalid promptFeedback');
+        $promptFeedback = null;
+        if (!empty($array['promptFeedback'])) {
+            $promptFeedback = PromptFeedback::fromArray($array['promptFeedback']);
         }
 
         $candidates = array_map(
             static fn (array $candidate): Candidate => Candidate::fromArray($candidate),
             $array['candidates'] ?? [],
         );
-
-        $promptFeedback = PromptFeedback::fromArray($array['promptFeedback']);
 
         return new self($candidates, $promptFeedback);
     }
