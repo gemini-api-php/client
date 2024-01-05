@@ -29,10 +29,12 @@ use RuntimeException;
 
 use function curl_close;
 use function curl_exec;
+use function curl_getinfo;
 use function curl_init;
 use function curl_setopt;
 use function extension_loaded;
 use function json_decode;
+use function sprintf;
 
 class Client implements GeminiClientInterface
 {
@@ -103,6 +105,21 @@ class Client implements GeminiClientInterface
             static fn (array $arr) => $callback(GenerateContentResponse::fromArray($arr)),
         );
 
+        $writeFunction = static function (CurlHandle $ch, string $str) use ($request, $parser): int {
+            $responseCode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+
+            return $responseCode === 200
+                ? $parser->consume($str)
+                : throw new RuntimeException(
+                    sprintf(
+                        'Gemini API operation failed: operation=%s, status_code=%d, response=%s',
+                        $request->getOperation(),
+                        $responseCode,
+                        $str,
+                    ),
+                );
+        };
+
         $ch = curl_init("{$this->baseUrl}/v1/{$request->getOperation()}");
 
         if ($ch === false) {
@@ -115,11 +132,7 @@ class Client implements GeminiClientInterface
             'Content-type: application/json',
             self::API_KEY_HEADER_NAME . ": {$this->apiKey}",
         ]);
-        curl_setopt(
-            $ch,
-            CURLOPT_WRITEFUNCTION,
-            static fn (CurlHandle $ch, string $str): int => $parser->consume($str),
-        );
+        curl_setopt($ch, CURLOPT_WRITEFUNCTION, $writeFunction);
         curl_exec($ch);
         curl_close($ch);
     }
