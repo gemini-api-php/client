@@ -120,7 +120,9 @@ class ClientTest extends TestCase
             ->with('POST', 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent')
             ->willReturn($httpRequest);
 
-        $httpRequest = $httpRequest->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key');
+        $httpRequest = $httpRequest
+            ->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key')
+            ->withAddedHeader('content-type', 'application/json');
 
         $stream = Utils::streamFor('{"model":"models\/gemini-pro","contents":[{"parts":[{"text":"this is a text"}],"role":"user"}]}');
         $streamFactory = $this->createMock(StreamFactoryInterface::class);
@@ -173,7 +175,9 @@ class ClientTest extends TestCase
             ->with('POST', 'https://generativelanguage.googleapis.com/v1/models/embedding-001:embedContent')
             ->willReturn($httpRequest);
 
-        $httpRequest = $httpRequest->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key');
+        $httpRequest = $httpRequest
+            ->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key')
+            ->withAddedHeader('content-type', 'application/json');
 
         $stream = Utils::streamFor('{"content":{"parts":[{"text":"this is a text"}],"role":"user"}}');
         $streamFactory = $this->createMock(StreamFactoryInterface::class);
@@ -221,7 +225,9 @@ class ClientTest extends TestCase
             ->with('POST', 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:countTokens')
             ->willReturn($httpRequest);
 
-        $httpRequest = $httpRequest->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key');
+        $httpRequest = $httpRequest
+            ->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key')
+            ->withAddedHeader('content-type', 'application/json');
 
         $stream = Utils::streamFor('{"model":"models\/gemini-pro","contents":[{"parts":[{"text":"this is a text"}],"role":"user"}]}');
         $streamFactory = $this->createMock(StreamFactoryInterface::class);
@@ -300,7 +306,9 @@ class ClientTest extends TestCase
             ->with('GET', 'https://generativelanguage.googleapis.com/v1/models')
             ->willReturn($httpRequest);
 
-        $httpRequest = $httpRequest->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key');
+        $httpRequest = $httpRequest
+            ->withAddedHeader(GeminiAPIClientInterface::API_KEY_HEADER_NAME, 'test-api-key')
+            ->withAddedHeader('content-type', 'application/json');
 
         $httpClient = $this->createMock(HttpClientInterface::class);
         $httpClient->expects(self::once())

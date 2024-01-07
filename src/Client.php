@@ -27,7 +27,6 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use RuntimeException;
 
-use function array_map;
 use function curl_close;
 use function curl_exec;
 use function curl_getinfo;
@@ -43,7 +42,7 @@ class Client implements GeminiClientInterface
     private string $baseUrl = 'https://generativelanguage.googleapis.com';
 
     /**
-     * @var array<string, string>
+     * @var array<string, string|string[]>
      */
     private array $requestHeaders = [];
 
@@ -137,13 +136,11 @@ class Client implements GeminiClientInterface
             throw new RuntimeException('Gemini API cannot initialize streaming content request');
         }
 
-        $headers = $this->requestHeaders + [
-            'content-type' => 'application/json',
-            self::API_KEY_HEADER_NAME => $this->apiKey,
-        ];
         $headerLines = [];
-        foreach ($headers as $name => $value) {
-            $headerLines[] = "{$name}: {$value}";
+        foreach ($this->getRequestHeaders() as $name => $values) {
+            foreach ((array) $values as $value) {
+                $headerLines[] = "{$name}: {$value}";
+            }
         }
 
         curl_setopt($ch, CURLOPT_URL, "{$this->baseUrl}/v1/{$request->getOperation()}");
@@ -198,15 +195,30 @@ class Client implements GeminiClientInterface
     }
 
     /**
-     * @param array<string, string> $headers
+     * @param array<string, string|string[]> $headers
      * @return self
      */
     public function withRequestHeaders(array $headers): self
     {
         $clone = clone $this;
-        $clone->requestHeaders = array_map(strtolower(...), $headers);
+        $clone->requestHeaders = [];
+
+        foreach ($headers as $name => $value) {
+            $clone->requestHeaders[strtolower($name)] = $value;
+        }
 
         return $clone;
+    }
+
+    /**
+     * @return array<string, string|string[]>
+     */
+    private function getRequestHeaders(): array
+    {
+        return $this->requestHeaders + [
+            'content-type' => 'application/json',
+            self::API_KEY_HEADER_NAME => $this->apiKey,
+        ];
     }
 
     /**
@@ -220,10 +232,9 @@ class Client implements GeminiClientInterface
 
         $uri = "{$this->baseUrl}/v1/{$request->getOperation()}";
         $httpRequest = $this->requestFactory
-            ->createRequest($request->getHttpMethod(), $uri)
-            ->withAddedHeader(self::API_KEY_HEADER_NAME, $this->apiKey);
+            ->createRequest($request->getHttpMethod(), $uri);
 
-        foreach ($this->requestHeaders as $name => $value) {
+        foreach ($this->getRequestHeaders() as $name => $value) {
             $httpRequest = $httpRequest->withAddedHeader($name, $value);
         }
 
