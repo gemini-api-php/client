@@ -51,10 +51,12 @@ you need to allow `php-http/discovery` composer plugin or install a PSR-18 compa
 ### Basic text generation
 
 ```php
-$client = new GeminiAPI\Client('GEMINI_API_KEY');
+use GeminiAPI\Client;
+use GeminiAPI\Resources\Parts\TextPart;
 
+$client = new Client('GEMINI_API_KEY');
 $response = $client->geminiPro()->generateContent(
-    new TextPart('PHP in less than 100 chars')
+    new TextPart('PHP in less than 100 chars'),
 );
 
 print $response->text();
@@ -67,8 +69,12 @@ print $response->text();
 > Image input modality is only enabled for Gemini Pro Vision model
 
 ```php
-$client = new GeminiAPI\Client('GEMINI_API_KEY');
+use GeminiAPI\Client;
+use GeminiAPI\Enums\MimeType;
+use GeminiAPI\Resources\Parts\ImagePart;
+use GeminiAPI\Resources\Parts\TextPart;
 
+$client = new Client('GEMINI_API_KEY');
 $response = $client->geminiProVision()->generateContent(
     new TextPart('Explain what is in the image'),
     new ImagePart(
@@ -87,8 +93,10 @@ print $response->text();
 ### Chat Session (Multi-Turn Conversations)
 
 ```php
-$client = new GeminiAPI\Client('GEMINI_API_KEY');
+use GeminiAPI\Client;
+use GeminiAPI\Resources\Parts\TextPart;
 
+$client = new Client('GEMINI_API_KEY');
 $chat = $client->geminiPro()->startChat();
 
 $response = $chat->sendMessage(new TextPart('Hello World in PHP'));
@@ -121,7 +129,10 @@ This code will print "Hello World!" to the standard output.
 ### Chat Session with history
 
 ```php
-$client = new GeminiAPI\Client('GEMINI_API_KEY');
+use GeminiAPI\Client;
+use GeminiAPI\Enums\Role;
+use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\Parts\TextPart;
 
 $history = [
     Content::text('Hello World in PHP', Role::User),
@@ -136,6 +147,8 @@ $history = [
         Role::Model,
     ),
 ];
+
+$client = new Client('GEMINI_API_KEY');
 $chat = $client->geminiPro()
     ->startChat()
     ->withHistory($history);
@@ -165,7 +178,9 @@ In the streaming response, the callback function will be called whenever a respo
 Long responses may be broken into separate responses, and you can start receiving responses faster using a content stream.
 
 ```php
-$client = new GeminiAPI\Client('GEMINI_API_KEY');
+use GeminiAPI\Client;
+use GeminiAPI\Resources\Parts\TextPart;
+use GeminiAPI\Responses\GenerateContentResponse;
 
 $callback = function (GenerateContentResponse $response): void {
     static $count = 0;
@@ -175,6 +190,7 @@ $callback = function (GenerateContentResponse $response): void {
     $count++;
 };
 
+$client = new Client('GEMINI_API_KEY');
 $client->geminiPro()->generateContentStream(
     $callback,
     [new TextPart('PHP in less than 100 chars')],
@@ -190,7 +206,11 @@ $client->geminiPro()->generateContentStream(
 > Requires `curl` extension to be enabled 
 
 ```php
-$client = new GeminiAPI\Client('GEMINI_API_KEY');
+use GeminiAPI\Client;
+use GeminiAPI\Enums\Role;
+use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\Parts\TextPart;
+use GeminiAPI\Responses\GenerateContentResponse;
 
 $history = [
     Content::text('Hello World in PHP', Role::User),
@@ -205,9 +225,6 @@ $history = [
         Role::Model,
     ),
 ];
-$chat = $client->geminiPro()
-    ->startChat()
-    ->withHistory($history);
 
 $callback = function (GenerateContentResponse $response): void {
     static $count = 0;
@@ -216,6 +233,11 @@ $callback = function (GenerateContentResponse $response): void {
     print $response->text();
     $count++;
 };
+
+$client = new Client('GEMINI_API_KEY');
+$chat = $client->geminiPro()
+    ->startChat()
+    ->withHistory($history);
 
 $chat->sendMessageStream($callback, new TextPart('in Go'));
 ```
@@ -238,8 +260,11 @@ This code will print "Hello World!" to the standard output.
 ### Embed Content
 
 ```php
-$client = new GeminiAPI\Client('GEMINI_API_KEY');
+use GeminiAPI\Client;
+use GeminiAPI\Enums\ModelName;
+use GeminiAPI\Resources\Parts\TextPart;
 
+$client = new Client('GEMINI_API_KEY');
 $response = $client->embeddingModel(ModelName::Embedding)
     ->embedContent(
         new TextPart('PHP in less than 100 chars'),
@@ -256,8 +281,10 @@ print_r($response->embedding->values);
 ### Tokens counting
 
 ```php
-$client = new GeminiAPI\Client('GEMINI_API_KEY');
+use GeminiAPI\Client;
+use GeminiAPI\Resources\Parts\TextPart;
 
+$client = new Client('GEMINI_API_KEY');
 $response = $client->geminiPro()->countTokens(
     new TextPart('PHP in less than 100 chars'),
 );
@@ -269,8 +296,9 @@ print $response->totalTokens;
 ### Listing models
 
 ```php
-$client = new GeminiAPI\Client('GEMINI_API_KEY');
+use GeminiAPI\Client;
 
+$client = new Client('GEMINI_API_KEY');
 $response = $client->listModels();
 
 print_r($response->models);
@@ -297,12 +325,18 @@ print_r($response->models);
 #### Safety Settings and Generation Configuration
 
 ```php
-$client = new GeminiAPI\Client('GEMINI_API_KEY');
-$safetySetting = new GeminiAPI\SafetySetting(
+use GeminiAPI\Client;
+use GeminiAPI\Enums\HarmCategory;
+use GeminiAPI\Enums\HarmBlockThreshold;
+use GeminiAPI\GenerationConfig;
+use GeminiAPI\Resources\Parts\TextPart;
+use GeminiAPI\SafetySetting;
+
+$safetySetting = new SafetySetting(
     HarmCategory::HARM_CATEGORY_HATE_SPEECH,
     HarmBlockThreshold::BLOCK_LOW_AND_ABOVE,
 );
-$generationConfig = (new GeminiAPI\GenerationConfig())
+$generationConfig = (new GenerationConfig())
     ->withCandidateCount(1)
     ->withMaxOutputTokens(40)
     ->withTemperature(0.5)
@@ -310,6 +344,7 @@ $generationConfig = (new GeminiAPI\GenerationConfig())
     ->withTopP(0.6)
     ->withStopSequences(['STOP']);
 
+$client = new Client('GEMINI_API_KEY');
 $response = $client->geminiPro()
     ->withAddedSafetySetting($safetySetting)
     ->withGenerationConfig($generationConfig)
@@ -321,11 +356,15 @@ $response = $client->geminiPro()
 #### Using your own HTTP client
 
 ```php
-$guzzle = new GuzzleHttp\Client([
+use GeminiAPI\Client as GeminiClient;
+use GeminiAPI\Resources\Parts\TextPart;
+use GuzzleHttp\Client as GuzzleClient;
+
+$guzzle = new GuzzleClient([
   'proxy' => 'http://localhost:8125',
 ]);
-$client = new GeminiAPI\Client('GEMINI_API_KEY', $guzzle);
 
+$client = new GeminiClient('GEMINI_API_KEY', $guzzle);
 $response = $client->geminiPro()->generateContent(
     new TextPart('PHP in less than 100 chars')
 );
@@ -348,15 +387,18 @@ The following curl options will be overwritten by the Gemini Client.
 You can also pass the headers you want to be used in the requests.
 
 ```php
-$client = new GeminiAPI\Client('GEMINI_API_KEY');
+use GeminiAPI\Client;
+use GeminiAPI\Resources\Parts\TextPart;
+use GeminiAPI\Responses\GenerateContentResponse;
 
 $callback = function (GenerateContentResponse $response): void {
     print $response->text();
 };
 
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_PROXY, 'http://localhost:8125');
+curl_setopt($ch, \CURLOPT_PROXY, 'http://localhost:8125');
 
+$client = new Client('GEMINI_API_KEY');
 $client->withRequestHeaders([
         'User-Agent' => 'My Gemini-backed app'
     ])
