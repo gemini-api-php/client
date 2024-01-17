@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace GeminiAPI;
 
+use CurlHandle;
 use GeminiAPI\Enums\ModelName;
 use GeminiAPI\Requests\CountTokensRequest;
 use GeminiAPI\Requests\EmbedContentRequest;
 use GeminiAPI\Requests\GenerateContentRequest;
+use GeminiAPI\Requests\GenerateContentStreamRequest;
 use GeminiAPI\Responses\CountTokensResponse;
 use GeminiAPI\Responses\EmbedContentResponse;
 use GeminiAPI\Responses\GenerateContentResponse;
@@ -27,4 +29,16 @@ interface ClientInterface
     public function embeddingModel(ModelName $modelName): EmbeddingModel;
     public function listModels(): ListModelsResponse;
     public function withBaseUrl(string $baseUrl): self;
+
+    /**
+     * @param GenerateContentStreamRequest $request
+     * @param callable(GenerateContentResponse): void $callback
+     * @param CurlHandle|null $curl
+     * @return void
+     */
+    public function generateContentStream(
+        GenerateContentStreamRequest $request,
+        callable $callback,
+        ?CurlHandle $curl = null,
+    ): void;
 }
