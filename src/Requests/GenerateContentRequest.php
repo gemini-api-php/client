@@ -6,9 +6,10 @@ namespace GeminiAPI\Requests;
 
 use GeminiAPI\Enums\ModelName;
 use GeminiAPI\GenerationConfig;
+use GeminiAPI\Resources\Content;
 use GeminiAPI\SafetySetting;
 use GeminiAPI\Traits\ArrayTypeValidator;
-use GeminiAPI\Resources\Content;
+use GeminiAPI\Traits\ModelNameToString;
 use JsonSerializable;
 
 use function json_encode;
@@ -16,15 +17,16 @@ use function json_encode;
 class GenerateContentRequest implements JsonSerializable, RequestInterface
 {
     use ArrayTypeValidator;
+    use ModelNameToString;
 
     /**
-     * @param ModelName $modelName
+     * @param ModelName|string $modelName
      * @param Content[] $contents
      * @param SafetySetting[] $safetySettings
      * @param GenerationConfig|null $generationConfig
      */
     public function __construct(
-        public readonly ModelName $modelName,
+        public readonly ModelName|string $modelName,
         public readonly array $contents,
         public readonly array $safetySettings = [],
         public readonly ?GenerationConfig $generationConfig = null,
@@ -35,7 +37,7 @@ class GenerateContentRequest implements JsonSerializable, RequestInterface
 
     public function getOperation(): string
     {
-        return "{$this->modelName->value}:generateContent";
+        return "{$this->modelNameToString($this->modelName)}:generateContent";
     }
 
     public function getHttpMethod(): string
@@ -59,7 +61,7 @@ class GenerateContentRequest implements JsonSerializable, RequestInterface
     public function jsonSerialize(): array
     {
         $arr = [
-            'model' => $this->modelName->value,
+            'model' => $this->modelNameToString($this->modelName),
             'contents' => $this->contents,
         ];
 

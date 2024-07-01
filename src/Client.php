@@ -87,7 +87,7 @@ class Client implements GeminiClientInterface
     }
 
 
-    public function generativeModel(ModelName $modelName): GenerativeModel
+    public function generativeModel(ModelName|string $modelName): GenerativeModel
     {
         return new GenerativeModel(
             $this,
@@ -95,7 +95,7 @@ class Client implements GeminiClientInterface
         );
     }
 
-    public function embeddingModel(ModelName $modelName): EmbeddingModel
+    public function embeddingModel(ModelName|string $modelName): EmbeddingModel
     {
         return new EmbeddingModel(
             $this,

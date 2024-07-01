@@ -7,11 +7,11 @@ namespace GeminiAPI\Tests\Unit\Requests;
 use GeminiAPI\Enums\HarmBlockThreshold;
 use GeminiAPI\Enums\HarmCategory;
 use GeminiAPI\Enums\HarmProbability;
-use GeminiAPI\Enums\ModelName;
 use GeminiAPI\Enums\Role;
 use GeminiAPI\GenerationConfig;
 use GeminiAPI\Requests\GenerateContentRequest;
 use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\ModelName;
 use GeminiAPI\Resources\Parts\TextPart;
 use GeminiAPI\Resources\SafetyRating;
 use GeminiAPI\SafetySetting;
@@ -20,10 +20,10 @@ use PHPUnit\Framework\TestCase;
 
 class GenerateContentRequestTest extends TestCase
 {
-    public function testConstructorWithNoContents()
+    public function testConstructorWithNoContents(): void
     {
         $request = new GenerateContentRequest(
-            ModelName::Default,
+            ModelName::GEMINI_PRO,
             [],
             [],
             null,
@@ -31,10 +31,10 @@ class GenerateContentRequestTest extends TestCase
         self::assertInstanceOf(GenerateContentRequest::class, $request);
     }
 
-    public function testConstructorWithContents()
+    public function testConstructorWithContents(): void
     {
         $request = new GenerateContentRequest(
-            ModelName::Default,
+            ModelName::GEMINI_PRO,
             [
                 new Content([], Role::User),
                 new Content([], Role::Model),
@@ -45,12 +45,12 @@ class GenerateContentRequestTest extends TestCase
         self::assertInstanceOf(GenerateContentRequest::class, $request);
     }
 
-    public function testConstructorWithInvalidContents()
+    public function testConstructorWithInvalidContents(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         new GenerateContentRequest(
-            ModelName::Default,
+            ModelName::GEMINI_PRO,
             [
                 new Content([], Role::User),
                 new TextPart('This is a text'),
@@ -60,10 +60,10 @@ class GenerateContentRequestTest extends TestCase
         );
     }
 
-    public function testConstructorWithSafetySettings()
+    public function testConstructorWithSafetySettings(): void
     {
         $request = new GenerateContentRequest(
-            ModelName::Default,
+            ModelName::GEMINI_PRO,
             [],
             [
                 new SafetySetting(
@@ -80,12 +80,12 @@ class GenerateContentRequestTest extends TestCase
         self::assertInstanceOf(GenerateContentRequest::class, $request);
     }
 
-    public function testConstructorWithInvalidSafetySettings()
+    public function testConstructorWithInvalidSafetySettings(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         new GenerateContentRequest(
-            ModelName::Default,
+            ModelName::GEMINI_PRO,
             [],
             [
                 new SafetySetting(
@@ -102,10 +102,10 @@ class GenerateContentRequestTest extends TestCase
         );
     }
 
-    public function testConstructorWithGenerationConfig()
+    public function testConstructorWithGenerationConfig(): void
     {
         $request = new GenerateContentRequest(
-            ModelName::Default,
+            ModelName::GEMINI_PRO,
             [],
             [],
             new GenerationConfig(),
@@ -113,41 +113,41 @@ class GenerateContentRequestTest extends TestCase
         self::assertInstanceOf(GenerateContentRequest::class, $request);
     }
 
-    public function testGetOperation()
+    public function testGetOperation(): void
     {
-        $request = new GenerateContentRequest(ModelName::Default, []);
-        self::assertEquals('models/text-bison-001:generateContent', $request->getOperation());
+        $request = new GenerateContentRequest(ModelName::GEMINI_PRO, []);
+        self::assertEquals('models/gemini-pro:generateContent', $request->getOperation());
     }
 
-    public function testGetHttpMethod()
+    public function testGetHttpMethod(): void
     {
-        $request = new GenerateContentRequest(ModelName::Default, []);
+        $request = new GenerateContentRequest(ModelName::GEMINI_PRO, []);
         self::assertEquals('POST', $request->getHttpMethod());
     }
 
-    public function testGetHttpPayload()
+    public function testGetHttpPayload(): void
     {
         $request = new GenerateContentRequest(
-            ModelName::Default,
+            ModelName::GEMINI_PRO,
             [
                 new Content([new TextPart('This is a text')], Role::User),
             ],
         );
-        $expected = '{"model":"models\/text-bison-001","contents":[{"parts":[{"text":"This is a text"}],"role":"user"}]}';
+        $expected = '{"model":"models\/gemini-pro","contents":[{"parts":[{"text":"This is a text"}],"role":"user"}]}';
         self::assertEquals($expected, $request->getHttpPayload());
     }
 
-    public function testJsonSerialize()
+    public function testJsonSerialize(): void
     {
         $request = new GenerateContentRequest(
-            ModelName::Default,
+            ModelName::GEMINI_PRO,
             [
                 new Content([new TextPart('This is a text')], Role::User),
             ],
         );
 
         $expected = [
-            'model' => 'models/text-bison-001',
+            'model' => 'models/gemini-pro',
             'contents' => [
                 new Content([new TextPart('This is a text')], Role::User),
             ],
@@ -155,10 +155,10 @@ class GenerateContentRequestTest extends TestCase
         self::assertEquals($expected, $request->jsonSerialize());
     }
 
-    public function test__toString()
+    public function test__toString(): void
     {
         $request = new GenerateContentRequest(
-            ModelName::Default,
+            ModelName::GEMINI_PRO,
             [
                 new Content(
                     [new TextPart('This is a text')],
@@ -167,7 +167,7 @@ class GenerateContentRequestTest extends TestCase
             ],
         );
 
-        $expected = '{"model":"models\/text-bison-001","contents":[{"parts":[{"text":"This is a text"}],"role":"user"}]}';
+        $expected = '{"model":"models\/gemini-pro","contents":[{"parts":[{"text":"This is a text"}],"role":"user"}]}';
         self::assertEquals($expected, (string) $request);
     }
 }

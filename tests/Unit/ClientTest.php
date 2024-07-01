@@ -6,12 +6,13 @@ namespace GeminiAPI\Tests\Unit;
 
 use GeminiAPI\Client;
 use GeminiAPI\ClientInterface as GeminiAPIClientInterface;
-use GeminiAPI\Enums\ModelName;
+use GeminiAPI\Enums\ModelName as ModelNameEnum;
 use GeminiAPI\GenerativeModel;
 use GeminiAPI\Requests\CountTokensRequest;
 use GeminiAPI\Requests\EmbedContentRequest;
 use GeminiAPI\Requests\GenerateContentRequest;
 use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\ModelName;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Utils;
@@ -47,20 +48,20 @@ class ClientTest extends TestCase
             'test-api-key',
             $this->createMock(HttpClientInterface::class),
         );
-        $model = $client->geminiPro();
+        $model = $client->generativeModel(ModelName::GEMINI_PRO);
         self::assertInstanceOf(GenerativeModel::class, $model);
-        self::assertEquals(ModelName::GeminiPro, $model->modelName);
+        self::assertEquals(ModelName::GEMINI_PRO, $model->modelName);
     }
 
-    public function testGeminiProVision()
+    public function testGeminiProWithEnum()
     {
         $client = new Client(
             'test-api-key',
             $this->createMock(HttpClientInterface::class),
         );
-        $model = $client->geminiProVision();
+        $model = $client->generativeModel(ModelNameEnum::GeminiPro);
         self::assertInstanceOf(GenerativeModel::class, $model);
-        self::assertEquals(ModelName::GeminiProVision, $model->modelName);
+        self::assertEquals(ModelNameEnum::GeminiPro, $model->modelName);
     }
 
     public function testGenerativeModel()
@@ -69,9 +70,9 @@ class ClientTest extends TestCase
             'test-api-key',
             $this->createMock(HttpClientInterface::class),
         );
-        $model = $client->generativeModel(ModelName::Embedding);
+        $model = $client->generativeModel(ModelName::EMBEDDING_001);
         self::assertInstanceOf(GenerativeModel::class, $model);
-        self::assertEquals(ModelName::Embedding, $model->modelName);
+        self::assertEquals(ModelName::EMBEDDING_001, $model->modelName);
     }
 
     public function testGenerateContent()
@@ -144,7 +145,7 @@ class ClientTest extends TestCase
             $streamFactory,
         );
         $request = new GenerateContentRequest(
-            ModelName::GeminiPro,
+            ModelName::GEMINI_PRO,
             [Content::text('this is a text')],
         );
         $response = $client->generateContent($request);
@@ -199,7 +200,7 @@ class ClientTest extends TestCase
             $streamFactory,
         );
         $request = new EmbedContentRequest(
-            ModelName::Embedding,
+            ModelName::EMBEDDING_001,
             Content::text('this is a text'),
         );
         $response = $client->embedContent($request);
@@ -249,7 +250,7 @@ class ClientTest extends TestCase
             $streamFactory,
         );
         $request = new CountTokensRequest(
-            ModelName::GeminiPro,
+            ModelName::GEMINI_PRO,
             [Content::text('this is a text')],
         );
         $response = $client->countTokens($request);

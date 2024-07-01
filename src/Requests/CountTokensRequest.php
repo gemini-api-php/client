@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace GeminiAPI\Requests;
 
 use GeminiAPI\Enums\ModelName;
-use GeminiAPI\Traits\ArrayTypeValidator;
 use GeminiAPI\Resources\Content;
+use GeminiAPI\Traits\ArrayTypeValidator;
+use GeminiAPI\Traits\ModelNameToString;
 use JsonSerializable;
 
 use function json_encode;
@@ -14,13 +15,14 @@ use function json_encode;
 class CountTokensRequest implements JsonSerializable, RequestInterface
 {
     use ArrayTypeValidator;
+    use ModelNameToString;
 
     /**
-     * @param ModelName $modelName
+     * @param ModelName|string $modelName
      * @param Content[] $contents
      */
     public function __construct(
-        public readonly ModelName $modelName,
+        public readonly ModelName|string $modelName,
         public readonly array $contents,
     ) {
         $this->ensureArrayOfType($this->contents, Content::class);
@@ -28,7 +30,7 @@ class CountTokensRequest implements JsonSerializable, RequestInterface
 
     public function getOperation(): string
     {
-        return "{$this->modelName->value}:countTokens";
+        return "{$this->modelNameToString($this->modelName)}:countTokens";
     }
 
     public function getHttpMethod(): string
@@ -50,7 +52,7 @@ class CountTokensRequest implements JsonSerializable, RequestInterface
     public function jsonSerialize(): array
     {
         return [
-            'model' => $this->modelName->value,
+            'model' => $this->modelNameToString($this->modelName),
             'contents' => $this->contents,
         ];
     }

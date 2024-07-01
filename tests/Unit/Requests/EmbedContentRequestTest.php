@@ -5,37 +5,37 @@ declare(strict_types=1);
 namespace GeminiAPI\Tests\Unit\Requests;
 
 use BadMethodCallException;
-use GeminiAPI\Enums\ModelName;
 use GeminiAPI\Enums\TaskType;
 use GeminiAPI\Requests\EmbedContentRequest;
 use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\ModelName;
 use PHPUnit\Framework\TestCase;
 
 class EmbedContentRequestTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $request = new EmbedContentRequest(
-            ModelName::Embedding,
+            ModelName::EMBEDDING_001,
             Content::text('this is a test'),
         );
         self::assertInstanceOf(EmbedContentRequest::class, $request);
     }
 
-    public function testConstructorWithTaskType()
+    public function testConstructorWithTaskType(): void
     {
         $request = new EmbedContentRequest(
-            ModelName::Embedding,
+            ModelName::EMBEDDING_001,
             Content::text('this is a test'),
             TaskType::RETRIEVAL_DOCUMENT,
         );
         self::assertInstanceOf(EmbedContentRequest::class, $request);
     }
 
-    public function testConstructorWithTitle()
+    public function testConstructorWithTitle(): void
     {
         $request = new EmbedContentRequest(
-            ModelName::Embedding,
+            ModelName::EMBEDDING_001,
             Content::text('this is a test'),
             TaskType::RETRIEVAL_DOCUMENT,
             'this is a title',
@@ -43,62 +43,50 @@ class EmbedContentRequestTest extends TestCase
         self::assertInstanceOf(EmbedContentRequest::class, $request);
     }
 
-    public function testConstructorWithTaskTypeAndNonEmbeddingModel()
-    {
-        $this->expectException(BadMethodCallException::class);
-        $this->expectExceptionMessage('TaskType can only be set when ModelName is Embedding');
-
-        new EmbedContentRequest(
-            ModelName::GeminiPro,
-            Content::text('this is a test'),
-            TaskType::RETRIEVAL_DOCUMENT,
-        );
-    }
-
-    public function testConstructorWithTitleAndWrongTaskType()
+    public function testConstructorWithTitleAndWrongTaskType(): void
     {
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Title is only applicable when TaskType is RETRIEVAL_DOCUMENT');
 
         new EmbedContentRequest(
-            ModelName::Embedding,
+            ModelName::EMBEDDING_001,
             Content::text('this is a test'),
             TaskType::RETRIEVAL_QUERY,
             'this is a title',
         );
     }
 
-    public function testGetHttpPayload()
+    public function testGetHttpPayload(): void
     {
         $request = new EmbedContentRequest(
-            ModelName::Embedding,
+            ModelName::EMBEDDING_001,
             Content::text('this is a test'),
         );
         self::assertEquals('{"content":{"parts":[{"text":"this is a test"}],"role":"user"}}', $request->getHttpPayload());
     }
 
-    public function testGetHttpMethod()
+    public function testGetHttpMethod(): void
     {
         $request = new EmbedContentRequest(
-            ModelName::Embedding,
+            ModelName::EMBEDDING_001,
             Content::text('this is a test'),
         );
         self::assertEquals('POST', $request->getHttpMethod());
     }
 
-    public function testGetOperation()
+    public function testGetOperation(): void
     {
         $request = new EmbedContentRequest(
-            ModelName::Embedding,
+            ModelName::EMBEDDING_001,
             Content::text('this is a test'),
         );
         self::assertEquals('models/embedding-001:embedContent', $request->getOperation());
     }
 
-    public function testJsonSerialize()
+    public function testJsonSerialize(): void
     {
         $request = new EmbedContentRequest(
-            ModelName::Embedding,
+            ModelName::EMBEDDING_001,
             $content = Content::text('this is a test'),
             TaskType::RETRIEVAL_DOCUMENT,
             'this is a title',
@@ -111,10 +99,10 @@ class EmbedContentRequestTest extends TestCase
         self::assertEquals($expected, $request->jsonSerialize());
     }
 
-    public function test__toString()
+    public function test__toString(): void
     {
         $request = new EmbedContentRequest(
-            ModelName::Embedding,
+            ModelName::EMBEDDING_001,
             Content::text('this is a test'),
         );
         self::assertEquals('{"content":{"parts":[{"text":"this is a test"}],"role":"user"}}', (string) $request);

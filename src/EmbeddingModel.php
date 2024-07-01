@@ -19,7 +19,7 @@ class EmbeddingModel
 
     public function __construct(
         private readonly Client $client,
-        public readonly ModelName $modelName,
+        public readonly ModelName|string $modelName,
     ) {
     }
 
