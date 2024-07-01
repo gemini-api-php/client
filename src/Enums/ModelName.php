@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace GeminiAPI\Enums;
 
+/**
+ * @deprecated Use constants from GeminiAPI\Resources\ModelName instead
+ */
 enum ModelName: string
 {
     case Default = 'models/text-bison-001';

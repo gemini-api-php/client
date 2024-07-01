@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GeminiAPI;
 
-use BadMethodCallException;
 use CurlHandle;
 use GeminiAPI\Enums\ModelName;
 use GeminiAPI\Enums\Role;
@@ -29,7 +28,7 @@ class GenerativeModel
 
     public function __construct(
         private readonly Client $client,
-        public readonly ModelName $modelName,
+        public readonly ModelName|string $modelName,
     ) {
     }
 

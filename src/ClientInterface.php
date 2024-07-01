@@ -25,8 +25,8 @@ interface ClientInterface
     public function countTokens(CountTokensRequest $request): CountTokensResponse;
     public function generateContent(GenerateContentRequest $request): GenerateContentResponse;
     public function embedContent(EmbedContentRequest $request): EmbedContentResponse;
-    public function generativeModel(ModelName $modelName): GenerativeModel;
-    public function embeddingModel(ModelName $modelName): EmbeddingModel;
+    public function generativeModel(ModelName|string $modelName): GenerativeModel;
+    public function embeddingModel(ModelName|string $modelName): EmbeddingModel;
     public function listModels(): ListModelsResponse;
     public function withBaseUrl(string $baseUrl): self;
 
