@@ -19,6 +19,7 @@ class GenerationConfig implements JsonSerializable
      *     temperature?: float,
      *     topP?: float,
      *     topK?: int,
+     *     responseMimeType?: string,
      * }
      */
     private array $config;
@@ -97,6 +98,11 @@ class GenerationConfig implements JsonSerializable
         return $clone;
     }
 
+    public function responseMimeType(string $mimeType): self
+    {
+        $clone = clone $this;
+        $clone->config['responseMimeType'] = $mimeType;
+
     /**
      * @return array{
      *      candidateCount?: int,
@@ -105,6 +111,7 @@ class GenerationConfig implements JsonSerializable
      *      temperature?: float,
      *      topP?: float,
      *      topK?: int,
+     *      responseMimeType?: string,
      *  }
      */
     public function jsonSerialize(): array
