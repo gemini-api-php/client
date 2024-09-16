@@ -100,6 +100,7 @@ class GenerativeModel
             $contents,
             $this->safetySettings,
             $this->generationConfig,
+            $this->systemInstruction
         );
 
         $this->client->generateContentStream($request, $callback, $ch);
