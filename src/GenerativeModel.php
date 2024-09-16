@@ -11,6 +11,7 @@ use GeminiAPI\Enums\Role;
 use GeminiAPI\Requests\CountTokensRequest;
 use GeminiAPI\Requests\GenerateContentRequest;
 use GeminiAPI\Requests\GenerateContentStreamRequest;
+use GeminiAPI\Resources\Parts\TextPart;
 use GeminiAPI\Responses\CountTokensResponse;
 use GeminiAPI\Responses\GenerateContentResponse;
 use GeminiAPI\Resources\Content;
@@ -25,7 +26,7 @@ class GenerativeModel
     /** @var SafetySetting[] */
     private array $safetySettings = [];
 
-    private ?string $systemInstruction = null;
+    private ?array $systemInstruction = null;
 
     private ?GenerationConfig $generationConfig = null;
 
@@ -145,7 +146,7 @@ class GenerativeModel
     {
 
         $clone = clone $this;
-        $clone->systemInstruction = $instruction;
+        $clone->systemInstruction['parts'] = [new TextPart($instruction)];
 
         return $clone;
     }
