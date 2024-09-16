@@ -29,7 +29,7 @@ class GenerateContentStreamRequest implements JsonSerializable, RequestInterface
         public readonly array $contents,
         public readonly array $safetySettings = [],
         public readonly ?GenerationConfig $generationConfig = null,
-        public readonly ?string $systemInstruction = null
+        public ?string $systemInstruction = null
 
     ) {
         $this->ensureArrayOfType($this->contents, Content::class);
