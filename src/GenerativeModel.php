@@ -144,7 +144,7 @@ class GenerativeModel
     {
 
         $clone = clone $this;
-        $this->systemInstruction = $instruction;
+        $clone->systemInstruction = $instruction;
 
         return $clone;
     }
