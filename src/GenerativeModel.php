@@ -25,6 +25,8 @@ class GenerativeModel
     /** @var SafetySetting[] */
     private array $safetySettings = [];
 
+    private ?string $systemInstruction = null;
+
     private ?GenerationConfig $generationConfig = null;
 
     public function __construct(
@@ -56,6 +58,7 @@ class GenerativeModel
             $contents,
             $this->safetySettings,
             $this->generationConfig,
+            $this->systemInstruction
         );
 
         return $this->client->generateContent($request);
@@ -133,6 +136,15 @@ class GenerativeModel
     {
         $clone = clone $this;
         $clone->generationConfig = $generationConfig;
+
+        return $clone;
+    }
+
+    public function withSystemInstruction(?string $instruction = null): self
+    {
+
+        $clone = clone $this;
+        $this->systemInstruction = $instruction;
 
         return $clone;
     }

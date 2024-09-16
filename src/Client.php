@@ -103,7 +103,7 @@ class Client implements GeminiClientInterface
         );
     }
 
-    /**
+    /**x
      * @throws ClientExceptionInterface
      */
     public function generateContent(GenerateContentRequest $request): GenerateContentResponse
