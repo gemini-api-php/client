@@ -93,4 +93,15 @@ class CandidateTest extends TestCase
 
         self::assertInstanceOf(Candidate::class, $candidate);
     }
+
+    public function testMisingContent()
+    {
+        $candidate = Candidate::fromArray([
+            'finishReason' => 'OTHER',
+            'index' => 0,
+            'safetyRatings' => [],
+        ]);
+
+        self::assertInstanceOf(Candidate::class, $candidate);
+    }
 }
