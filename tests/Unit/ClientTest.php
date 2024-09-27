@@ -78,7 +78,7 @@ class ClientTest extends TestCase
     {
         $httpRequest = new Request(
             'POST',
-            'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent',
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
         );
         $httpResponse = new Response(
             body: <<<BODY
@@ -117,7 +117,7 @@ class ClientTest extends TestCase
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
         $requestFactory->expects(self::once())
             ->method('createRequest')
-            ->with('POST', 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent')
+            ->with('POST', 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent')
             ->willReturn($httpRequest);
 
         $httpRequest = $httpRequest
@@ -155,7 +155,7 @@ class ClientTest extends TestCase
     {
         $httpRequest = new Request(
             'POST',
-            'https://generativelanguage.googleapis.com/v1/models/embedding-001:embedContent',
+            'https://generativelanguage.googleapis.com/v1beta/models/embedding-001:embedContent',
         );
         $httpResponse = new Response(
             body: <<<BODY
@@ -172,7 +172,7 @@ class ClientTest extends TestCase
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
         $requestFactory->expects(self::once())
             ->method('createRequest')
-            ->with('POST', 'https://generativelanguage.googleapis.com/v1/models/embedding-001:embedContent')
+            ->with('POST', 'https://generativelanguage.googleapis.com/v1beta/models/embedding-001:embedContent')
             ->willReturn($httpRequest);
 
         $httpRequest = $httpRequest
@@ -210,7 +210,7 @@ class ClientTest extends TestCase
     {
         $httpRequest = new Request(
             'POST',
-            'https://generativelanguage.googleapis.com/v1/models/gemini-pro:countTokens',
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:countTokens',
         );
         $httpResponse = new Response(
             body: <<<BODY
@@ -222,7 +222,7 @@ class ClientTest extends TestCase
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
         $requestFactory->expects(self::once())
             ->method('createRequest')
-            ->with('POST', 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:countTokens')
+            ->with('POST', 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:countTokens')
             ->willReturn($httpRequest);
 
         $httpRequest = $httpRequest
@@ -260,7 +260,7 @@ class ClientTest extends TestCase
     {
         $httpRequest = new Request(
             'GET',
-            'https://generativelanguage.googleapis.com/v1/models',
+            'https://generativelanguage.googleapis.com/v1beta/models',
         );
         $httpResponse = new Response(
             body: <<<BODY
@@ -303,7 +303,7 @@ class ClientTest extends TestCase
         $requestFactory = $this->createMock(RequestFactoryInterface::class);
         $requestFactory->expects(self::once())
             ->method('createRequest')
-            ->with('GET', 'https://generativelanguage.googleapis.com/v1/models')
+            ->with('GET', 'https://generativelanguage.googleapis.com/v1beta/models')
             ->willReturn($httpRequest);
 
         $httpRequest = $httpRequest
