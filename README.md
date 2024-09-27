@@ -1,15 +1,15 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/gemini-api-php/client/main/assets/example.png" width="800" alt="Gemini API PHP Client - Example">
+    <img src="https://raw.githubusercontent.com/alexandrevega/gemini-api-client/main/assets/example.png" width="800" alt="Gemini API PHP Client - Example">
 </p>
 <p align="center">
-    <a href="https://packagist.org/packages/gemini-api-php/client"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/gemini-api-php/client"></a>
-    <a href="https://packagist.org/packages/gemini-api-php/client"><img alt="Latest Version" src="https://img.shields.io/packagist/v/gemini-api-php/client"></a>
-    <a href="https://packagist.org/packages/gemini-api-php/client"><img alt="License" src="https://img.shields.io/github/license/gemini-api-php/client"></a>
+    <a href="https://packagist.org/packages/galexandrevega/gemini-api-client"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/alexandrevega/gemini-api-client"></a>
+    <a href="https://packagist.org/packages/alexandrevega/gemini-api-client"><img alt="Latest Version" src="https://img.shields.io/packagist/v/alexandrevega/gemini-api-client"></a>
+    <a href="https://packagist.org/packages/alexandrevega/gemini-api-client"><img alt="License" src="https://img.shields.io/github/license/alexandrevega/gemini-api-client"></a>
 </p>
 
 # Gemini API PHP Client
 
-This library is a fork of [gemini-api-php/client](https://github.com/mini-api-php/client) adding system instructions and updating api to v1beta.
+This library is a fork of [gemini-api-php/client](https://github.com/gemini-api-php/client) adding system instructions and updating api to v1beta.
 
 Gemini API PHP Client allows you to use the Google's generative AI models, like Gemini Pro and Gemini Pro Vision.
 
