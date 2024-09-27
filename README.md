@@ -43,7 +43,7 @@ _This library is not developed or endorsed by Google._
 First step is to install the Gemini API PHP client with Composer.
 
 ```shell
-composer require gemini-api-php/client
+composer require alexandrevega/gemini-api-client
 ```
 
 Gemini API PHP client does not come with an HTTP client.
