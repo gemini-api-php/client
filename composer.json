@@ -1,5 +1,5 @@
 {
-  "name": "gemini-api-php/client",
+  "name": "alexandrevega/gemini-api-client",
   "description": "API client for Google's Gemini API",
   "keywords": [
     "php",
@@ -17,6 +17,10 @@
     {
       "name": "Erdem Köse",
       "email": "erdemkose@gmail.com"
+    },
+    {
+      "name": "Carlos Ramos",
+      "email": "contact@cramos.dev"
     }
   ],
   "require": {
