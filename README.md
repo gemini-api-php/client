@@ -14,6 +14,7 @@ Gemini API PHP Client allows you to use the Google's generative AI models, like 
 _This library is not developed or endorsed by Google._
 
 - Erdem Köse - **[github.com/erdemkose](https://github.com/erdemkose)**
+- Alexandre Vega - **[github.com/alexandrevega](https://github.com/alexandrevega)**
 
 ## Table of Contents
 - [Installation](#installation)
@@ -24,6 +25,7 @@ _This library is not developed or endorsed by Google._
   - [Chat Session with history](#chat-session-with-history)
   - [Streaming responses](#streaming-responses)
   - [Streaming Chat Session](#streaming-chat-session)
+  - [System Instructions](#system-instructions)
   - [Tokens counting](#tokens-counting)
   - [Listing models](#listing-models)
   - [Advanced Usages](#advanced-usages)
@@ -256,6 +258,58 @@ Response #1
 
 This code will print "Hello World!" to the standard output.
 ```
+
+### System Instruction
+You can add [System Instructions](https://ai.google.dev/gemini-api/docs/system-instructions?hl=en&lang=web) to steer the behaviour of Gemini.
+
+```php
+use GeminiAPI\Client;
+use GeminiAPI\Enums\Role;
+use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\Parts\TextPart;
+
+$history = [
+    Content::text('Hello World in PHP', Role::User),
+    Content::text(
+        <<<TEXT
+        <?php
+        echo "Hello World!";
+        ?>
+        
+        This code will print "Hello World!" to the standard output.
+        TEXT,
+        Role::Model,
+    ),
+];
+
+$client = new Client('GEMINI_API_KEY');
+$chat = $client->geminiPro()
+    ->withSystemInstruction("You're an expert developer")
+    ->startChat()
+    ->withHistory($history);
+
+$response = $chat->sendMessage(new TextPart('in Go'));
+print $response->text();
+```
+
+```text
+Response #0
+package main
+
+import "fmt"
+
+func main() {
+
+Response #1
+    fmt.Println("Hello World!")
+}
+
+This code will print "Hello World!" to the standard output.
+```
+
+
+
+
 
 ### Embed Content
 
