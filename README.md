@@ -9,6 +9,8 @@
 
 # Gemini API PHP Client
 
+This library is a fork of [gemini-api-php/client](https://github.com/mini-api-php/client) adding system instructions and updating api to v1beta.
+
 Gemini API PHP Client allows you to use the Google's generative AI models, like Gemini Pro and Gemini Pro Vision.
 
 _This library is not developed or endorsed by Google._
@@ -25,7 +27,7 @@ _This library is not developed or endorsed by Google._
   - [Chat Session with history](#chat-session-with-history)
   - [Streaming responses](#streaming-responses)
   - [Streaming Chat Session](#streaming-chat-session)
-  - [System Instructions](#system-instructions)
+  - [System Instruction](#system-instruction)
   - [Tokens counting](#tokens-counting)
   - [Listing models](#listing-models)
   - [Advanced Usages](#advanced-usages)
