@@ -23,7 +23,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 
 class ClientTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $client = new Client(
             'test-api-key',
@@ -32,7 +32,7 @@ class ClientTest extends TestCase
         self::assertInstanceOf(Client::class, $client);
     }
 
-    public function testWithBaseUrl()
+    public function testWithBaseUrl(): void
     {
         $client = new Client(
             'test-api-key',
@@ -42,7 +42,7 @@ class ClientTest extends TestCase
         self::assertInstanceOf(Client::class, $client);
     }
 
-    public function testGeminiPro()
+    public function testGeminiPro(): void
     {
         $client = new Client(
             'test-api-key',
@@ -53,7 +53,7 @@ class ClientTest extends TestCase
         self::assertEquals(ModelName::GEMINI_PRO, $model->modelName);
     }
 
-    public function testGeminiProWithEnum()
+    public function testGeminiProWithEnum(): void
     {
         $client = new Client(
             'test-api-key',
@@ -75,7 +75,7 @@ class ClientTest extends TestCase
         self::assertEquals(ModelName::EMBEDDING_001, $model->modelName);
     }
 
-    public function testGenerateContent()
+    public function testGenerateContent(): void
     {
         $httpRequest = new Request(
             'POST',
@@ -152,7 +152,7 @@ class ClientTest extends TestCase
         self::assertEquals('This is the Gemini Pro response', $response->text());
     }
 
-    public function testEmbedContent()
+    public function testEmbedContent(): void
     {
         $httpRequest = new Request(
             'POST',
@@ -207,7 +207,7 @@ class ClientTest extends TestCase
         self::assertEquals([0.041395925, -0.017692696], $response->embedding->values);
     }
 
-    public function testCountTokens()
+    public function testCountTokens(): void
     {
         $httpRequest = new Request(
             'POST',
@@ -257,7 +257,7 @@ class ClientTest extends TestCase
         self::assertEquals(10, $response->totalTokens);
     }
 
-    public function testListModels()
+    public function testListModels(): void
     {
         $httpRequest = new Request(
             'GET',
