@@ -37,7 +37,7 @@ class ChatSession
             ->withGenerationConfig($config)
             ->generateContentWithContents($this->history);
 
-        if(!empty($response->candidates)) {
+        if (!empty($response->candidates)) {
             $parts = $response->candidates[0]->content->parts;
             $this->history[] = new Content($parts, Role::Model);
         }
@@ -58,7 +58,7 @@ class ChatSession
 
         $parts = [];
         $partsCollectorCallback = function (GenerateContentResponse $response) use ($callback, &$parts) {
-            if(!empty($response->candidates)) {
+            if (!empty($response->candidates)) {
                 array_push($parts, ...$response->parts());
             }
 
