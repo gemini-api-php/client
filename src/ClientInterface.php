@@ -21,6 +21,8 @@ use GeminiAPI\Responses\ListModelsResponse;
 interface ClientInterface
 {
     public const API_KEY_HEADER_NAME = 'x-goog-api-key';
+    public const API_VERSION_V1 = 'v1';
+    public const API_VERSION_V1_BETA = 'v1beta';
 
     public function countTokens(CountTokensRequest $request): CountTokensResponse;
     public function generateContent(GenerateContentRequest $request): GenerateContentResponse;

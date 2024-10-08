@@ -27,6 +27,7 @@ _This library is not developed or endorsed by Google._
   - [Tokens counting](#tokens-counting)
   - [Listing models](#listing-models)
   - [Advanced Usages](#advanced-usages)
+    - [Using Beta version](#using-beta-version)
     - [Safety Settings and Generation Configuration](#safety-settings-and-generation-configuration)
     - [Using your own HTTP client](#using-your-own-http-client)
     - [Using your own HTTP client for streaming responses](#using-your-own-http-client-for-streaming-responses)
@@ -328,6 +329,23 @@ print_r($response->models);
 ```
 
 ### Advanced Usages
+
+#### Using Beta version
+
+```php
+use GeminiAPI\Client;
+use GeminiAPI\Resources\ModelName;
+use GeminiAPI\Resources\Parts\TextPart;
+
+$client = (new Client('GEMINI_API_KEY'))
+    ->withV1BetaVersion();
+$response = $client->generativeModel(ModelName::GEMINI_PRO)->countTokens(
+    new TextPart('PHP in less than 100 chars'),
+);
+
+print $response->totalTokens;
+// 10
+```
 
 #### Safety Settings and Generation Configuration
 
