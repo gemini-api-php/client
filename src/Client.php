@@ -40,6 +40,7 @@ use function strtolower;
 class Client implements GeminiClientInterface
 {
     private string $baseUrl = 'https://generativelanguage.googleapis.com';
+    private string $version = GeminiClientInterface::API_VERSION_V1;
 
     /**
      * @var array<string, string|string[]>
@@ -163,7 +164,7 @@ class Client implements GeminiClientInterface
             }
         }
 
-        curl_setopt($ch, CURLOPT_URL, "{$this->baseUrl}/v1/{$request->getOperation()}");
+        curl_setopt($ch, CURLOPT_URL, $this->getRequestUrl($request));
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headerLines);
@@ -214,6 +215,19 @@ class Client implements GeminiClientInterface
         return $clone;
     }
 
+    public function withV1BetaVersion(): self
+    {
+        return $this->withVersion(GeminiClientInterface::API_VERSION_V1_BETA);
+    }
+
+    public function withVersion(string $version): self
+    {
+        $clone = clone $this;
+        $clone->version = $version;
+
+        return $clone;
+    }
+
     /**
      * @param array<string, string|string[]> $headers
      * @return self
@@ -241,6 +255,16 @@ class Client implements GeminiClientInterface
         ];
     }
 
+    private function getRequestUrl(RequestInterface $request): string
+    {
+        return sprintf(
+            '%s/%s/%s',
+            $this->baseUrl,
+            $this->version,
+            $request->getOperation(),
+        );
+    }
+
     /**
      * @throws ClientExceptionInterface
      */
@@ -250,9 +274,11 @@ class Client implements GeminiClientInterface
             throw new RuntimeException('Missing client or factory for Gemini API operation');
         }
 
-        $uri = "{$this->baseUrl}/v1/{$request->getOperation()}";
         $httpRequest = $this->requestFactory
-            ->createRequest($request->getHttpMethod(), $uri);
+            ->createRequest(
+                $request->getHttpMethod(),
+                $this->getRequestUrl($request),
+            );
 
         foreach ($this->getRequestHeaders() as $name => $value) {
             $httpRequest = $httpRequest->withAddedHeader($name, $value);
