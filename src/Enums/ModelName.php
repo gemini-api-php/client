@@ -12,6 +12,7 @@ enum ModelName: string
     case GeminiPro10Latest = 'models/gemini-1.0-pro-latest';
     case GeminiPro15 = 'models/gemini-1.5-pro';
     case GeminiPro15Flash = 'models/gemini-1.5-flash';
+    case GeminiPro15Flash8B = 'models/gemini-1.5-flash-8b';
     case GeminiProVision = 'models/gemini-pro-vision';
     case Embedding = 'models/embedding-001';
     case AQA = 'models/aqa';

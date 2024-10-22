@@ -71,6 +71,7 @@ class Client implements GeminiClientInterface
     {
         return $this->generativeModel(ModelName::GeminiPro10);
     }
+
     public function geminiPro10Latest(): GenerativeModel
     {
         return $this->generativeModel(ModelName::GeminiPro10Latest);
@@ -86,6 +87,10 @@ class Client implements GeminiClientInterface
         return $this->generativeModel(ModelName::GeminiPro15Flash);
     }
 
+    public function geminiProFlash1_5_8B(): GenerativeModel
+    {
+        return $this->generativeModel(ModelName::GeminiPro15Flash8B);
+    }
 
     public function generativeModel(ModelName $modelName): GenerativeModel
     {
