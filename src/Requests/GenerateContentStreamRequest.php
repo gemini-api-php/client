@@ -24,12 +24,14 @@ class GenerateContentStreamRequest implements JsonSerializable, RequestInterface
      * @param Content[] $contents
      * @param SafetySetting[] $safetySettings
      * @param GenerationConfig|null $generationConfig
+     * @param ?Content $systemInstruction
      */
     public function __construct(
         public readonly ModelName|string $modelName,
         public readonly array $contents,
         public readonly array $safetySettings = [],
         public readonly ?GenerationConfig $generationConfig = null,
+        public readonly ?Content $systemInstruction = null,
     ) {
         $this->ensureArrayOfType($this->contents, Content::class);
         $this->ensureArrayOfType($this->safetySettings, SafetySetting::class);
@@ -56,6 +58,7 @@ class GenerateContentStreamRequest implements JsonSerializable, RequestInterface
      *     contents: Content[],
      *     safetySettings?: SafetySetting[],
      *     generationConfig?: GenerationConfig,
+     *     systemInstruction?: Content,
      * }
      */
     public function jsonSerialize(): array
@@ -71,6 +74,10 @@ class GenerateContentStreamRequest implements JsonSerializable, RequestInterface
 
         if ($this->generationConfig) {
             $arr['generationConfig'] = $this->generationConfig;
+        }
+
+        if ($this->systemInstruction) {
+            $arr['systemInstruction'] = $this->systemInstruction;
         }
 
         return $arr;
