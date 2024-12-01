@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GeminiAPI\Resources;
 
 use GeminiAPI\Enums\FinishReason;
+use GeminiAPI\Enums\Role;
 use GeminiAPI\Traits\ArrayTypeValidator;
 use UnexpectedValueException;
 
@@ -61,9 +62,17 @@ class Candidate
             $candidate['safetyRatings'] ?? [],
         );
 
+        $content = isset($candidate['content'])
+            ? Content::fromArray($candidate['content'])
+            : Content::text('', Role::Model);
+
+        $finishReason = isset($candidate['finishReason'])
+            ? FinishReason::from($candidate['finishReason'])
+            : FinishReason::OTHER;
+
         return new self(
-            Content::fromArray($candidate['content']),
-            FinishReason::from($candidate['finishReason']),
+            $content,
+            $finishReason,
             $citationMetadata,
             $safetyRatings,
             $candidate['tokenCount'] ?? 0,

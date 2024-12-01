@@ -93,4 +93,31 @@ class CandidateTest extends TestCase
 
         self::assertInstanceOf(Candidate::class, $candidate);
     }
+
+    public function testFromArrayWithoutContent()
+    {
+        $candidate = Candidate::fromArray([
+            'safetyRatings' => [],
+            'citationMetadata' => [],
+            'index' => 1,
+            'tokenCount' => 1,
+            'finishReason' => 'OTHER',
+        ]);
+
+        self::assertInstanceOf(Candidate::class, $candidate);
+    }
+
+    public function testFromArrayWithoutFinishReason()
+    {
+        $candidate = Candidate::fromArray([
+            'content' => ['parts' => [], 'role' => 'user'],
+            'safetyRatings' => [],
+            'citationMetadata' => [],
+            'index' => 1,
+            'tokenCount' => 1,
+        ]);
+
+        self::assertInstanceOf(Candidate::class, $candidate);
+        self::assertEquals(FinishReason::OTHER, $candidate->finishReason);
+    }
 }
