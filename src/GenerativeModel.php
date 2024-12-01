@@ -26,6 +26,8 @@ class GenerativeModel
 
     private ?GenerationConfig $generationConfig = null;
 
+    private ?Content $systemInstruction = null;
+
     public function __construct(
         private readonly Client $client,
         public readonly ModelName|string $modelName,
@@ -55,6 +57,7 @@ class GenerativeModel
             $contents,
             $this->safetySettings,
             $this->generationConfig,
+            $this->systemInstruction,
         );
 
         return $this->client->generateContent($request);
@@ -96,6 +99,7 @@ class GenerativeModel
             $contents,
             $this->safetySettings,
             $this->generationConfig,
+            $this->systemInstruction,
         );
 
         $this->client->generateContentStream($request, $callback, $ch);
@@ -132,6 +136,14 @@ class GenerativeModel
     {
         $clone = clone $this;
         $clone->generationConfig = $generationConfig;
+
+        return $clone;
+    }
+
+    public function withSystemInstruction(string $systemInstruction): self
+    {
+        $clone = clone $this;
+        $clone->systemInstruction = Content::text($systemInstruction, Role::User);
 
         return $clone;
     }

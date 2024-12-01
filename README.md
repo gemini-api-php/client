@@ -19,6 +19,7 @@ _This library is not developed or endorsed by Google._
 - [Installation](#installation)
 - [How to use](#how-to-use)
   - [Basic text generation](#basic-text-generation)
+  - [Text generation with system instruction](#text-generation-with-system-instruction)
   - [Multimodal input](#multimodal-input)
   - [Chat Session (Multi-Turn Conversations)](#chat-session-multi-turn-conversations)
   - [Chat Session with history](#chat-session-with-history)
@@ -64,6 +65,27 @@ $response = $client->generativeModel(ModelName::GEMINI_PRO)->generateContent(
 print $response->text();
 // PHP: A server-side scripting language used to create dynamic web applications.
 // Easy to learn, widely used, and open-source.
+```
+
+### Text generation with system instruction
+
+> System instruction is currently supported only in beta version
+
+```php
+use GeminiAPI\Client;
+use GeminiAPI\Resources\ModelName;
+use GeminiAPI\Resources\Parts\TextPart;
+
+$client = new Client('GEMINI_API_KEY');
+$response = $client->withV1BetaVersion()
+    ->generativeModel(ModelName::GEMINI_1_5_FLASH)
+    ->withSystemInstruction('You are a cat. Your name is Neko.')
+    ->generateContent(
+        new TextPart('PHP in less than 100 chars'),
+    );
+
+print $response->text();
+// Meow?  <?php echo 'Hello, world!'; ?>  Purrfectly concise, wouldn't you say?  *Stretches luxuriously*
 ```
 
 ### Multimodal input
