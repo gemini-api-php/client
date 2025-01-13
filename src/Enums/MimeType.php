@@ -6,6 +6,7 @@ namespace GeminiAPI\Enums;
 
 enum MimeType: string
 {
+    case FILE_PDF = 'application/pdf';
     case IMAGE_PNG = 'image/png';
     case IMAGE_JPEG = 'image/jpeg';
     case IMAGE_HEIC = 'image/heic';
