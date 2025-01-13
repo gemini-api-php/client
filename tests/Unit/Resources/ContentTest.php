@@ -7,6 +7,7 @@ namespace GeminiAPI\Tests\Unit\Resources;
 use GeminiAPI\Enums\MimeType;
 use GeminiAPI\Enums\Role;
 use GeminiAPI\Resources\Content;
+use GeminiAPI\Resources\Parts\FilePart;
 use GeminiAPI\Resources\Parts\ImagePart;
 use GeminiAPI\Resources\Parts\TextPart;
 use PHPUnit\Framework\TestCase;
@@ -105,7 +106,7 @@ class ContentTest extends TestCase
         ]);
         $parts = [
             new TextPart('this is a text'),
-            new ImagePart(MimeType::IMAGE_JPEG, 'this is an image'),
+            new FilePart(MimeType::IMAGE_JPEG, 'this is an image'),
         ];
         self::assertInstanceOf(Content::class, $content);
         self::assertEquals($parts, $content->parts);
