@@ -6,7 +6,7 @@ namespace GeminiAPI\Enums;
 
 enum MimeType: string
 {
-    case APPLICATION_PDF = 'application/pdf';
+    case FILE_PDF = 'application/pdf'; // Will not rename to APPLICATION_PDF to keep the backwards compatibility
     case APPLICATION_JAVASCRIPT = 'application/x-javascript';
     case APPLICATION_PYTHON = 'application/x-python';
 
@@ -23,7 +23,4 @@ enum MimeType: string
     case IMAGE_HEIC = 'image/heic';
     case IMAGE_HEIF = 'image/heif';
     case IMAGE_WEBP = 'image/webp';
-
-    // @deprecated
-    case FILE_PDF = 'application/pdf';
 }
