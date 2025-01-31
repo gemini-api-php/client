@@ -9,7 +9,7 @@ enum MimeType: string
     case APPLICATION_PDF = 'application/pdf';
     case APPLICATION_JAVASCRIPT = 'application/x-javascript';
     case APPLICATION_PYTHON = 'application/x-python';
-    
+
     case TEXT_PLAIN = 'text/plain';
     case TEXT_HTML = 'text/html';
     case TEXT_CSS = 'text/css';
