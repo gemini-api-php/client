@@ -7,6 +7,7 @@ namespace GeminiAPI;
 use GeminiAPI\Enums\Role;
 use GeminiAPI\Resources\Content;
 use GeminiAPI\Resources\Parts\PartInterface;
+use GeminiAPI\Responses\CountTokensResponse;
 use GeminiAPI\Responses\GenerateContentResponse;
 use GeminiAPI\Traits\ArrayTypeValidator;
 use InvalidArgumentException;
@@ -97,5 +98,20 @@ class ChatSession
         $clone->history = $history;
 
         return $clone;
+    }
+
+    /**
+     * @throws ClientExceptionInterface
+     */
+    public function countTokens(PartInterface ...$parts): CountTokensResponse
+    {
+        // Concatenate the parts of the history if it exists
+        if (!empty($this->history)) {
+            foreach ($this->history as $content) {
+                $parts = array_merge($content->parts, $parts);
+            }
+        }
+
+        return $this->model->countTokens(...$parts);
     }
 }

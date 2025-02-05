@@ -115,12 +115,17 @@ class GenerativeModel
      */
     public function countTokens(PartInterface ...$parts): CountTokensResponse
     {
-        $content = new Content($parts, Role::User);
+        $temporaryContent = new Content($parts, Role::User);
+
+        // Add system instruction if it exists
+        if ($this->systemInstruction !== null) {
+            $temporaryContent = $temporaryContent->addParts(...$this->systemInstruction->parts);
+        }
+
         $request = new CountTokensRequest(
             $this->modelName,
-            [$content],
+            [$temporaryContent]
         );
-
         return $this->client->countTokens($request);
     }
 
