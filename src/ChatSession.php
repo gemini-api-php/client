@@ -106,7 +106,7 @@ class ChatSession
     public function countTokens(PartInterface ...$parts): CountTokensResponse
     {
         // Concatenate the parts of the history if it exists
-        if ($this->history) {
+        if (!empty($this->history)) {
             foreach ($this->history as $content) {
                 $parts = array_merge($content->parts, $parts);
             }
