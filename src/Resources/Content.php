@@ -48,6 +48,15 @@ class Content
         return $this;
     }
 
+    public function addParts(PartInterface ...$parts): self
+    {
+        $this->ensureArrayOfType($parts, PartInterface::class);
+
+        $this->parts = array_merge($this->parts, $parts);
+
+        return $this;
+    }
+
     public static function text(
         string $text,
         Role $role = Role::User,
