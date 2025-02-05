@@ -50,9 +50,11 @@ class Content
 
     public function addParts(PartInterface ...$parts): self
     {
-        $this->ensureArrayOfType($parts, PartInterface::class);
+        /** @var array<int, PartInterface> $typedParts */
+        $typedParts = $parts;
 
-        $this->parts = array_merge($this->parts, $parts);
+        $this->ensureArrayOfType($typedParts, PartInterface::class);
+        $this->parts = array_merge($this->parts, $typedParts);
 
         return $this;
     }
