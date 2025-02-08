@@ -9,6 +9,7 @@ enum MimeType: string
     case FILE_PDF = 'application/pdf'; // Will not rename to APPLICATION_PDF to keep the backwards compatibility
     case APPLICATION_JAVASCRIPT = 'application/x-javascript';
     case APPLICATION_PYTHON = 'application/x-python';
+    case APPLICATION_JSON = 'application/json';
 
     case TEXT_PLAIN = 'text/plain';
     case TEXT_HTML = 'text/html';
