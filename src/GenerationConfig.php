@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GeminiAPI;
 
+use GeminiAPI\Enums\MimeType;
 use GeminiAPI\Traits\ArrayTypeValidator;
 use JsonSerializable;
 use UnexpectedValueException;
@@ -19,6 +20,7 @@ class GenerationConfig implements JsonSerializable
      *     temperature?: float,
      *     topP?: float,
      *     topK?: int,
+     *     responseMimeType?: string
      * }
      */
     private array $config;
@@ -97,6 +99,14 @@ class GenerationConfig implements JsonSerializable
         return $clone;
     }
 
+    public function withResponseMimeType(MimeType $mimeType)
+    {
+        $clone = clone $this;
+        $clone->config['responseMimeType'] = $mimeType->value;
+
+        return $clone;
+    }
+
     /**
      * @return array{
      *      candidateCount?: int,
@@ -105,6 +115,7 @@ class GenerationConfig implements JsonSerializable
      *      temperature?: float,
      *      topP?: float,
      *      topK?: int,
+     *      responseMimeType?: string
      *  }
      */
     public function jsonSerialize(): array
