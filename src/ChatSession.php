@@ -31,11 +31,7 @@ class ChatSession
     {
         $this->history[] = new Content($parts, Role::User);
 
-        $config = (new GenerationConfig())
-        ->withCandidateCount(1);
-        $response = $this->model
-            ->withGenerationConfig($config)
-            ->generateContentWithContents($this->history);
+        $response = $this->model->generateContentWithContents($this->history);
 
         if (!empty($response->candidates)) {
             $parts = $response->candidates[0]->content->parts;
@@ -65,11 +61,7 @@ class ChatSession
             $callback($response);
         };
 
-        $config = (new GenerationConfig())
-            ->withCandidateCount(1);
-        $this->model
-            ->withGenerationConfig($config)
-            ->generateContentStreamWithContents($partsCollectorCallback, $this->history);
+        $this->model->generateContentStreamWithContents($partsCollectorCallback, $this->history);
 
         if (!empty($parts)) {
             $this->history[] = new Content($parts, Role::Model);
